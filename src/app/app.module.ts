@@ -3,20 +3,26 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
-import { HomePage } from '../pages/home/home';
+import { RecommenderPage } from '../pages/recommender/recommender';
+import { ProfilePage } from '../pages/profile/profile';
 import { TabsPage } from '../pages/tabs/tabs';
+import { SettingsPage } from '../pages/settings/settings';
+import { RecommenderMenuPage } from '../pages/recommender-menu/recommender-menu';
+import { ProfileMenuPage } from '../pages/profile-menu/profile-menu';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Geolocation } from '@ionic-native/geolocation';
+import { HTTP } from '@ionic-native/http';
 
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
-    ContactPage,
-    HomePage,
+    RecommenderPage,
+    ProfilePage,
+    SettingsPage,
+    RecommenderMenuPage,
+    ProfileMenuPage,
     TabsPage
   ],
   imports: [
@@ -26,14 +32,18 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
-    ContactPage,
-    HomePage,
+    RecommenderPage,
+    ProfilePage,
+    SettingsPage,
+    RecommenderMenuPage,
+    ProfileMenuPage,
     TabsPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    Geolocation,
+    HTTP,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

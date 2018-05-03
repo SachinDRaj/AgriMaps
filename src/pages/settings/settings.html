@@ -1,0 +1,77 @@
+<ion-header>
+
+  <ion-navbar  color="myGreen">
+    <ion-title>More Information</ion-title>
+  </ion-navbar>
+
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="item" color="dark">
+      <ion-segment-button value="instructions">
+        Instructions
+      </ion-segment-button>
+      <ion-segment-button value="definitions">
+        Definitions
+      </ion-segment-button>
+      <ion-segment-button value="about">
+        About
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <div [ngSwitch]="item">
+    <ion-grid *ngSwitchCase="'instructions'">
+      <ion-row>
+        <ion-col col-4>
+          <b>Fetch Radius</b>
+        </ion-col>
+        <ion-col col-8>
+          <p>The application at default fetches all data in a range of 1000 meteres from location. To change this please tap the settings button in bar and set the radius fetch to desired number.</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-4>
+          <b>Profile Mode / Recommender Mode</b>
+        </ion-col>
+        <ion-col col-8>
+          <p>To switch the application between the default profile mode and the recommender mode, tap the R or P button in the action bar. After tapping this button a notice will appear at the bottom of your screen and the views in the left hand drawer will change.</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-4>
+          <b>Location</b>
+        </ion-col>
+        <ion-col col-8>
+          <p>To change the location of interest, press screen at desired point for a minimum of 5 seconds. A prompt will appear to confirm that you would like to change the interest location to that point.</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-list *ngSwitchCase="'definitions'">
+
+
+        <button ion-item>Soil Series</button>
+      <!-- </ion-item>
+
+      <ion-item> -->
+        <button ion-item>Crop Families</button>
+
+
+    </ion-list>
+
+    <ion-grid *ngSwitchCase="'about'">
+      <ion-row>
+        <ion-col>
+          <p>AgriMaps is developed as part of an Agriculture ICT project called AgriNeTT.</p>
+          <p>AgriNeTT is a project of the St.Augustine campus of The University of the West Indies and is funded by the UWI-Trinidad and Tobago Research and Development Impact(RDI) Fund.</p>
+          <p>For further information, visit the AgriNeTT Website at sta.uwi.edu/agrinett</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+</ion-content>
