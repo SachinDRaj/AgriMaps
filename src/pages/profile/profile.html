@@ -3,9 +3,19 @@
     <ion-title>
       Profile Mode
     </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="openPMenu()">
+        <ion-icon name="apps"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button ion-button (click)="openSettings()">
+        <ion-icon name="information-circle"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding color="primary">
-  
+<ion-content>
+  <div #map id="map" style="width:100%; height:100%;"></div>
 </ion-content>

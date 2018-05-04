@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
-
-/**
- * Generated class for the SettingsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { IonicPage, NavController, NavParams, Platform, ModalController} from 'ionic-angular';
+import { SoilseriesPage } from '../soilseries/soilseries';
+import { CropfamiliesPage } from '../cropfamilies/cropfamilies';
 
 @IonicPage()
 @Component({
@@ -18,7 +13,7 @@ export class SettingsPage {
   item: string = "instructions";
   isAndroid: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,platform: Platform) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,platform: Platform,public modalCtrl: ModalController) {
     this.isAndroid = platform.is('android');
   }
 
@@ -26,4 +21,15 @@ export class SettingsPage {
     console.log('ionViewDidLoad SettingsPage');
   }
 
+  presentSModal() {
+    let modal = this.modalCtrl.create(SoilseriesPage);
+    modal.present();
+  }
+
+  presentCModal() {
+    let modal = this.modalCtrl.create(CropfamiliesPage);
+    modal.present();
+  }
+
 }
+

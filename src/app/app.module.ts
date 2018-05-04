@@ -9,6 +9,8 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsPage } from '../pages/settings/settings';
 import { RecommenderMenuPage } from '../pages/recommender-menu/recommender-menu';
 import { ProfileMenuPage } from '../pages/profile-menu/profile-menu';
+import { CropfamiliesPage } from '../pages/cropfamilies/cropfamilies';
+import { SoilseriesPage } from '../pages/soilseries/soilseries';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -23,6 +25,8 @@ import { HTTP } from '@ionic-native/http';
     SettingsPage,
     RecommenderMenuPage,
     ProfileMenuPage,
+    CropfamiliesPage,
+    SoilseriesPage,
     TabsPage
   ],
   imports: [
@@ -37,6 +41,8 @@ import { HTTP } from '@ionic-native/http';
     SettingsPage,
     RecommenderMenuPage,
     ProfileMenuPage,
+    CropfamiliesPage,
+    SoilseriesPage,
     TabsPage
   ],
   providers: [

@@ -53,13 +53,12 @@
 
     <ion-list *ngSwitchCase="'definitions'">
 
-
-        <button ion-item>Soil Series</button>
-      <!-- </ion-item>
-
-      <ion-item> -->
-        <button ion-item>Crop Families</button>
-
+      <ion-item> Soil Series
+        <button ion-button clear item-end (click)='presentSModal()'>View</button>
+      </ion-item>
+      <ion-item> Crop Families
+        <button ion-button clear item-end (click)='presentCModal()'>View</button>
+      </ion-item>
 
     </ion-list>
 
