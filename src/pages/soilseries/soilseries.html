@@ -1,18 +1,91 @@
 <ion-header>
   <ion-toolbar color="myGreen">
-      <ion-title>
-        Soil Series
-      </ion-title>
-      <ion-buttons start>
-        <button ion-button (click)="dismiss()">
-          <span ion-text color="primary" showWhen="ios">Close</span>
-          <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
-        </button>
-      </ion-buttons>
-    </ion-toolbar>
+    <ion-title>
+      Soil Series
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <ion-icon name="ios-arrow-back" showWhen="ios"><span ion-text> Back</span></ion-icon>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
 
 <ion-content padding>
-
+  <ion-grid>
+    <ion-row>
+      <ion-col col-4>
+        <b>pH</b>
+      </ion-col>
+      <ion-col col-8>
+        <p>This indicates a soil's level of acidity or alkalinity. Soils with pH below 4.5 are considered very acidic, those with pH values above 8.0 are strongly alkaline and those near a pH of 7.0 are neutral.</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>
+        <b>CEC</b>
+      </ion-col>
+      <ion-col col-8>
+        <p>CEC (Cation Exchange Capacity) gives an indication of a soil's ability to store positively charged nutrients like Calcium and Magnesium.</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>
+        <b>Sand %</b>
+      </ion-col>
+      <ion-col col-8>
+        <p>This represents the proportion of coarse grains in a soil.</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>
+        <b>Clay %</b>
+      </ion-col>
+      <ion-col col-8>
+        <p>This represents the proportion of fine particles in a soil.</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>
+        <b>P</b>
+      </ion-col>
+      <ion-col col-8>
+        <p>P (Phosphorous) is a primary plant nutrient required for photosynthesis, root formation and growth.</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>
+        <b>K</b>
+      </ion-col>
+      <ion-col col-8>
+        <p>K (Potassium) is a primary plant nutrient needed for photosynthesis and protein formation.</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>
+        <b>EC</b>
+      </ion-col>
+      <ion-col col-8>
+        <p>EC (Electrical Conductivity) gives an indication of the amount of soluble salts present in a soil.</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>
+        <b>Mg</b>
+      </ion-col>
+      <ion-col col-8>
+        <p>Mg (Magnesium) is a secondary nutrient which plays a central role in chlorophyll formation required for photosynthesis, enzyme activation and plant respiration.</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>
+        <b>Ca</b>
+      </ion-col>
+      <ion-col col-8>
+        <p>Ca (Calcium) is a secondary plant nutrient which serves to promote root and leaf development, activate plant enzymes and strengthens cell walls.</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

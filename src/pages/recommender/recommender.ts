@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ModalController } from 'ionic-angular';
 import { SettingsPage } from '../settings/settings';
 import { RecommenderMenuPage } from '../recommender-menu/recommender-menu';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -16,7 +16,7 @@ export class RecommenderPage {
   @ViewChild('map') mapRef: ElementRef;
   map: any;
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController,public modalCtrl: ModalController) {
 
   }
 
@@ -84,7 +84,8 @@ export class RecommenderPage {
   }
 
   openRMenu(){
-    this.navCtrl.push(RecommenderMenuPage);
+    let modal = this.modalCtrl.create(RecommenderMenuPage);
+    modal.present();
   }
 
 }

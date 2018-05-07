@@ -1,18 +1,80 @@
-<!--
-  Generated template for the ProfileMenuPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>profileMenu</ion-title>
-  </ion-navbar>
-
+  <ion-toolbar color="myGreen">
+    <ion-title>
+      Land Profiles
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <ion-icon name="ios-arrow-back" showWhen="ios"><span ion-text> Back</span></ion-icon>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
 
-<ion-content padding>
+<ion-content class="card-background-page">
+
+  <ion-list>
+    <ion-item>
+      <ion-label stacked>Radius request size in Metres</ion-label>
+      <ion-input type="number" placeholder="1000"></ion-input>
+    </ion-item>
+  </ion-list>
+
+
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6>
+        <ion-card>
+          <img src="assets/imgs/tomato.jpg"/>
+          <div class="card-title">Rivers</div>
+        </ion-card>
+      </ion-col>
+
+      <ion-col col-6>
+        <ion-card>
+          <img src="assets/imgs/tomato.jpg"/>
+          <div class="card-title">Soil Series</div>
+        </ion-card>
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-6>
+        <ion-card>
+          <img src="assets/imgs/tomato.jpg"/>
+          <div class="card-title">Roads</div>
+        </ion-card>
+      </ion-col>
+
+      <ion-col col-6>
+        <ion-card>
+          <img src="assets/imgs/tomato.jpg"/>
+          <div class="card-title">Contours</div>
+        </ion-card>
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-6>
+        <ion-card>
+          <img src="assets/imgs/tomato.jpg"/>
+          <div class="card-title">Rainfall</div>
+        </ion-card>
+      </ion-col>
+
+      <ion-col col-6>
+        <ion-card>
+          <img src="assets/imgs/tomato.jpg"/>
+          <div class="card-title">Land Use</div>
+        </ion-card>
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
 
 </ion-content>

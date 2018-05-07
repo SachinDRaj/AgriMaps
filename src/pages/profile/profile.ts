@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ModalController } from 'ionic-angular';
 import { ProfileMenuPage } from '../profile-menu/profile-menu';
 import { SettingsPage } from '../settings/settings';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -16,7 +16,7 @@ export class ProfilePage {
   @ViewChild('map') mapRef: ElementRef;
   map: any;
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController,public modalCtrl: ModalController) {
 
   }
 
@@ -84,7 +84,8 @@ export class ProfilePage {
   }
 
   openPMenu(){
-    this.navCtrl.push(ProfileMenuPage);
+    let modal = this.modalCtrl.create(ProfileMenuPage);
+    modal.present();
   }
 
 }

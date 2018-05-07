@@ -21,7 +21,7 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
 
   <div [ngSwitch]="item">
     <ion-grid *ngSwitchCase="'instructions'">
@@ -63,11 +63,12 @@
     </ion-list>
 
     <ion-grid *ngSwitchCase="'about'">
+      <img  class="aboutImg1" src="assets/imgs/logotemp.png"/>
       <ion-row>
         <ion-col>
           <p>AgriMaps is developed as part of an Agriculture ICT project called AgriNeTT.</p>
           <p>AgriNeTT is a project of the St.Augustine campus of The University of the West Indies and is funded by the UWI-Trinidad and Tobago Research and Development Impact(RDI) Fund.</p>
-          <p>For further information, visit the AgriNeTT Website at sta.uwi.edu/agrinett</p>
+          <p>For further information, visit the AgriNeTT Website at <a href="http://sta.uwi.edu/agrinett/">sta.uwi.edu/agrinett</a></p>
         </ion-col>
       </ion-row>
     </ion-grid>
