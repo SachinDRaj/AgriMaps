@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
-
-/**
- * Generated class for the ProfileMenuPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+// import { ProfilePage } from '../profile/profile';
+// import { TabsPage } from '../tabs/tabs';
 
 @IonicPage()
 @Component({
@@ -24,6 +19,12 @@ export class ProfileMenuPage {
 
   dismiss() {
     this.viewCtrl.dismiss();
+  }
+
+  goToMap(){
+    this.navCtrl.pop();
+    // this.navCtrl.setRoot(TabsPage);
+    // this.TabsPage.selectProfilePage();
   }
 
 }

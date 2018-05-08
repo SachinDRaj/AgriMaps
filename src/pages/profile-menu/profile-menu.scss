@@ -1,27 +1,32 @@
 page-profile-menu {
+
   .card-background-page {
-
-    ion-card {
-      position: relative;
-      text-align: center;
-    }
-
-    .card-title {
-      position: absolute;
-      top: 36%;
-      font-size: 1.0em;
-      width: 100%;
-      font-weight: bold;
-      color: #fff;
-    }
-
-    .card-subtitle {
-      font-size: 1.0em;
-      position: absolute;
-      top: 52%;
-      width: 100%;
-      color: #fff;
-    }
-
+    background: rgba(0, 0, 0, 0.8);
   }
+
+  .rBg{
+    background: #EFEFEF;
+  }
+
+  ion-card {
+    position: relative;
+    text-align: center;
+  }
+
+  .card-title{
+    position: absolute;
+    top:36%;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.3em;
+    width: 100%;
+  }
+
+  .iCard{
+    background-color: #9ACD32;
+    width: block;
+    height: 100px;
+    border-radius: 10px;
+  }
+
 }

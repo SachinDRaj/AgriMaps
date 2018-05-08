@@ -21,29 +21,29 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content class="bg">
 
   <div [ngSwitch]="item">
     <ion-grid *ngSwitchCase="'instructions'">
-      <ion-row>
+      <ion-row class="iBorder">
         <ion-col col-4>
-          <b>Fetch Radius</b>
+          <p class="iHeader">Fetch Radius</p>
         </ion-col>
         <ion-col col-8>
           <p>The application at default fetches all data in a range of 1000 meteres from location. To change this please tap the settings button in bar and set the radius fetch to desired number.</p>
         </ion-col>
       </ion-row>
-      <ion-row>
+      <ion-row class="iBorder">
         <ion-col col-4>
-          <b>Profile Mode / Recommender Mode</b>
+          <p class="iHeader">Profile Mode / Recommender Mode</p>
         </ion-col>
         <ion-col col-8>
           <p>To switch the application between the default profile mode and the recommender mode, tap the R or P button in the action bar. After tapping this button a notice will appear at the bottom of your screen and the views in the left hand drawer will change.</p>
         </ion-col>
       </ion-row>
-      <ion-row>
+      <ion-row class="iBorder">
         <ion-col col-4>
-          <b>Location</b>
+          <p class="iHeader">Location</p>
         </ion-col>
         <ion-col col-8>
           <p>To change the location of interest, press screen at desired point for a minimum of 5 seconds. A prompt will appear to confirm that you would like to change the interest location to that point.</p>
@@ -53,17 +53,17 @@
 
     <ion-list *ngSwitchCase="'definitions'">
 
-      <ion-item> Soil Series
+      <ion-item  class="bg"> Soil Series
         <button ion-button clear item-end (click)='presentSModal()'>View</button>
       </ion-item>
-      <ion-item> Crop Families
+      <ion-item  class="bg"> Crop Families
         <button ion-button clear item-end (click)='presentCModal()'>View</button>
       </ion-item>
 
     </ion-list>
 
     <ion-grid *ngSwitchCase="'about'">
-      <img  class="aboutImg1" src="assets/imgs/logotemp.png"/>
+      <img  class="aboutImg1" src="assets/imgs/logo_agrinet.png"/>
       <ion-row>
         <ion-col>
           <p>AgriMaps is developed as part of an Agriculture ICT project called AgriNeTT.</p>

@@ -15,7 +15,7 @@
 
 <ion-content class="card-background-page">
   <ion-list>
-    <ion-item>
+    <ion-item class="rBg">
       <ion-label stacked>Radius request size in Metres</ion-label>
       <ion-input type="number" placeholder="1000"></ion-input>
     </ion-item>
@@ -25,15 +25,15 @@
   <ion-grid>
     <ion-row>
       <ion-col col-6>
-        <ion-card>
-          <img src="assets/imgs/tomato.jpg"/>
+        <ion-card (click)="goToMap()" class="img1">
+          <img src="assets/imgs/cassava.jpg" height="100px" width="100px" class="img1"/>
           <div class="card-title">Cassava</div>
         </ion-card>
       </ion-col>
 
       <ion-col col-6>
-        <ion-card>
-          <img src="assets/imgs/tomato.jpg"/>
+        <ion-card (click)="goToMap()" class="img1">
+          <img src="assets/imgs/tomato.jpg" height="100px" width="100px" class="img1"/>
           <div class="card-title">Onion</div>
         </ion-card>
       </ion-col>
@@ -42,15 +42,15 @@
 
     <ion-row>
       <ion-col col-6>
-        <ion-card>
-          <img src="assets/imgs/tomato.jpg"/>
+        <ion-card (click)="goToMap()" class="img1">
+          <img src="assets/imgs/tomato.jpg" height="100px" width="100px" class="img1"/>
           <div class="card-title">Cocoa</div>
         </ion-card>
       </ion-col>
 
       <ion-col col-6>
-        <ion-card>
-          <img src="assets/imgs/tomato.jpg"/>
+        <ion-card (click)="goToMap()" class="img1">
+          <img src="assets/imgs/lettuce.jpg" height="100px" width="100px" class="img1"/>
           <div class="card-title">Lettuce</div>
         </ion-card>
       </ion-col>
@@ -59,15 +59,15 @@
 
     <ion-row>
       <ion-col col-6>
-        <ion-card>
-          <img src="assets/imgs/tomato.jpg"/>
+        <ion-card (click)="goToMap()" class="img1">
+          <img src="assets/imgs/tomato.jpg" height="100px" width="100px" class="img1"/>
           <div class="card-title">Tomatoes</div>
         </ion-card>
       </ion-col>
 
       <ion-col col-6>
-        <ion-card>
-          <img src="assets/imgs/tomato.jpg"/>
+        <ion-card (click)="goToMap()" class="img1">
+          <img src="assets/imgs/tomato.jpg" height="100px" width="100px" class="img1"/>
           <div class="card-title">Breadfruit</div>
         </ion-card>
       </ion-col>
@@ -76,15 +76,15 @@
 
     <ion-row>
       <ion-col col-6>
-        <ion-card>
-          <img src="assets/imgs/tomato.jpg"/>
+        <ion-card (click)="goToMap()" class="img1">
+          <img src="assets/imgs/tomato.jpg" height="100px" width="100px" class="img1"/>
           <div class="card-title">Papaya</div>
         </ion-card>
       </ion-col>
 
       <ion-col col-6>
-        <ion-card>
-          <img src="assets/imgs/tomato.jpg"/>
+        <ion-card (click)="goToMap()" class="img1">
+          <img src="assets/imgs/cucumber.jpg" height="100px" width="100px" class="img1"/>
           <div class="card-title">Cucumber</div>
         </ion-card>
       </ion-col>
@@ -93,15 +93,15 @@
 
     <ion-row>
       <ion-col col-6>
-        <ion-card>
-          <img src="assets/imgs/tomato.jpg"/>
+        <ion-card (click)="goToMap()" class="img1">
+          <img src="assets/imgs/pigeonpea.jpg" height="100px" width="100px" class="img1"/>
           <div class="card-title">Pigeon Peas</div>
         </ion-card>
       </ion-col>
 
       <ion-col col-6>
-        <ion-card>
-          <img src="assets/imgs/tomato.jpg"/>
+        <ion-card (click)="goToMap()" class="img1">
+          <img src="assets/imgs/tomato.jpg" height="100px" width="100px" class="img1"/>
           <div class="card-title">Corn</div>
         </ion-card>
       </ion-col>
@@ -110,15 +110,15 @@
 
     <ion-row>
       <ion-col col-6>
-        <ion-card>
-          <img src="assets/imgs/tomato.jpg"/>
+        <ion-card (click)="goToMap()" class="img1">
+          <img src="assets/imgs/sweetpepper.jpg" height="100px" width="100px" class="img1"/>
           <div class="card-title">Sweet Pepper</div>
         </ion-card>
       </ion-col>
 
       <ion-col col-6>
-        <ion-card>
-          <img src="assets/imgs/tomato.jpg"/>
+        <ion-card (click)="goToMap()" class="img1">
+          <img src="assets/imgs/pineapple.jpg" height="100px" width="100px" class="img1"/>
           <div class="card-title">Pineapple</div>
         </ion-card>
       </ion-col>
@@ -127,15 +127,15 @@
 
     <ion-row>
       <ion-col col-6>
-        <ion-card>
-          <img src="assets/imgs/tomato.jpg"/>
+        <ion-card (click)="goToMap()" class="img1">
+          <img src="assets/imgs/tomato.jpg" height="100px" width="100px" class="img1"/>
           <div class="card-title">Citrus</div>
         </ion-card>
       </ion-col>
 
       <ion-col col-6>
-        <ion-card>
-          <img src="assets/imgs/tomato.jpg"/>
+        <ion-card (click)="goToMap()" class="img1">
+          <img src="assets/imgs/sweetpotato.jpg" height="100px" width="100px" class="img1"/>
           <div class="card-title">Sweet Potato</div>
         </ion-card>
       </ion-col>
@@ -145,9 +145,8 @@
     <ion-row>
 
       <ion-col>
-        <ion-card>
-          <img src="assets/imgs/tomato.jpg"/>
-          <div class="card-title">All Crops</div>
+        <ion-card class="aCard" (click)="goToMap()">
+          <div class="aCard-title">All Crops</div>
         </ion-card>
       </ion-col>
 

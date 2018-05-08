@@ -21,9 +21,13 @@ export class RecommenderMenuPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad RecommenderMenuPage');
   }
-  
+
   dismiss() {
     this.viewCtrl.dismiss();
+  }
+
+  goToMap(){
+    this.navCtrl.pop();
   }
 
 }
