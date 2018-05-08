@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, ModalController} from 'ionic-angular';
 import { SoilseriesPage } from '../soilseries/soilseries';
 import { CropfamiliesPage } from '../cropfamilies/cropfamilies';
+import { WelcomescreenPage } from '../welcomescreen/welcomescreen';
 
 @IonicPage()
 @Component({
@@ -28,6 +29,11 @@ export class SettingsPage {
 
   presentCModal() {
     let modal = this.modalCtrl.create(CropfamiliesPage);
+    modal.present();
+  }
+
+  openWelcome(){
+    let modal = this.modalCtrl.create(WelcomescreenPage);
     modal.present();
   }
 
