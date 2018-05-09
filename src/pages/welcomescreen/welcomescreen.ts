@@ -28,19 +28,25 @@ export class WelcomescreenPage {
 
   slides = [
     {
-      title: "Welcome to the Docs!",
-      description: "The <b>Ionic Component Documentation</b> showcases a number of useful components that are included out of the box with Ionic.",
-      image: "assets/imgs/logo_agrinet.png",
+      title: "Welcome to AgriMaps!",
+      description: "AgriMaps is mobile application which displays land and soil information using a map interface.",
+      image: "assets/imgs/agrimapsicon.png",
     },
     {
-      title: "What is Ionic?",
-      description: "<b>Ionic Framework</b> is an open source SDK that enables developers to build high quality mobile apps with web technologies like HTML, CSS, and JavaScript.",
-      image: "assets/imgs/logo_agrinet.png",
+      title: "Land Profile Mode",
+      description: "The AgriMaps Land Profile Mode displays information such as annual rainfall, land use and soil properties.",
+      image: "assets/imgs/screen2.png",
     },
     {
-      title: "What is Ionic Cloud?",
-      description: "The <b>Ionic Cloud</b> is a cloud platform for managing and scaling Ionic apps with integrated services like push notifications, native builds, user auth, and live updating.",
-      image: "assets/imgs/logo_agrinet.png",
+      title: "Recommender Mode",
+      description: "The AgriMaps Recommender Mode displays information regarding the suitability of soil for the planting of specific crops.",
+      image: "assets/imgs/screen3.png",
+    }
+    ,
+    {
+      title: "More Information / Help",
+      description: "The More Information Button, highlighted above, can be pressed to display information about the application and instructions for its usage.",
+      image: "assets/imgs/screen4.png",
     }
   ];
 }

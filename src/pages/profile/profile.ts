@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { NavController, ModalController, ToastController } from 'ionic-angular';
 import { ProfileMenuPage } from '../profile-menu/profile-menu';
 import { SettingsPage } from '../settings/settings';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -16,8 +16,17 @@ export class ProfilePage {
   @ViewChild('map') mapRef: ElementRef;
   map: any;
 
-  constructor(public navCtrl: NavController,public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController) {
 
+  }
+
+  ionViewDidEnter(){
+    let toast = this.toastCtrl.create({
+            message: 'Now in Land Profile Mode',
+            duration: 1000,
+            position: 'top'
+        });
+    toast.present();
   }
 
   ionViewDidLoad() {

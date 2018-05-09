@@ -21,7 +21,7 @@
 </ion-header>
 
 
-<ion-content class="bg">
+<ion-content no-bounce class="bg">
 
   <div [ngSwitch]="item">
     <ion-grid *ngSwitchCase="'instructions'">
@@ -30,7 +30,7 @@
           <p class="iHeader">Fetch Radius</p>
         </ion-col>
         <ion-col col-8>
-          <p>The application at default fetches all data in a range of 1000 meteres from location. To change this please tap the settings button in bar and set the radius fetch to desired number.</p>
+          <p>The application at default fetches all data in a range of 1000 meteres from location. To change this please tap the app button in bar and set the radius fetch to desired number.</p>
         </ion-col>
       </ion-row>
       <ion-row class="iBorder">
@@ -38,7 +38,7 @@
           <p class="iHeader">Profile Mode / Recommender Mode</p>
         </ion-col>
         <ion-col col-8>
-          <p>To switch the application between the default profile mode and the recommender mode, tap the R or P button in the action bar. After tapping this button a notice will appear at the bottom of your screen and the views in the left hand drawer will change.</p>
+          <p>To switch the application between the default profile mode and the recommender mode, tap the R or P button in the tab bar. After tapping this button a notice will appear at the bottom of your screen and the views app menu will change.</p>
         </ion-col>
       </ion-row>
       <ion-row class="iBorder">
