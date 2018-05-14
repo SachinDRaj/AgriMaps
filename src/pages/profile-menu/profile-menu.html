@@ -16,9 +16,18 @@
 
   <ion-list>
     <ion-item class="rBg">
+      <ion-label>Radius request size in Metres</ion-label>
+      <ion-select [(ngModel)]="radius" interface="action-sheet">
+        <ion-option value="500">500</ion-option>
+        <ion-option value="1000" selected="true">1000</ion-option>
+        <ion-option value="2000">2000</ion-option>
+        <ion-option value="5000">5000</ion-option>
+      </ion-select>
+    </ion-item>
+    <!-- <ion-item class="rBg">
       <ion-label stacked>Radius request size in Metres</ion-label>
       <ion-input type="number" placeholder="1000" [(ngModel)]="radius" value="1000"></ion-input>
-    </ion-item>
+    </ion-item> -->
   </ion-list>
 
 

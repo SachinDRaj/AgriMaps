@@ -10,7 +10,7 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 })
 export class ProfileMenuPage {
 
-  radius: any;
+  radius = 1000;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl: ViewController) {
   }

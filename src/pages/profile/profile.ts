@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, ModalController, ToastController } from 'ionic-angular';
+import { NavController, ModalController, ToastController, LoadingController } from 'ionic-angular';
 import { ProfileMenuPage } from '../profile-menu/profile-menu';
 import { SettingsPage } from '../settings/settings';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -19,7 +19,7 @@ export class ProfilePage {
   ctaLayer: any;
   subtitle = "Soil Series";
 
-  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController) {
 
   }
 
@@ -100,9 +100,14 @@ export class ProfilePage {
     var lat = 10.641046689163778;
     var entireUrl;
     let modal = this.modalCtrl.create(ProfileMenuPage);
-    modal.onDidDismiss(data=> {
-      console.log(data);
+    modal.onDidDismiss(data=> {    
+      // console.log(data);
       if (data.catUrl != 0 ){
+        let loader = this.loadingCtrl.create({
+          content: "Loading Map...",
+          spinner: 'bubbles',
+        });
+        loader.present();
         entireUrl= this.dUrl+data.catUrl+"/"+lng+"&"+lat+"&"+data.rad;
         // console.log(entireUrl);
         this.subtitle = data.subtitle;
@@ -112,6 +117,7 @@ export class ProfilePage {
             // url:'http://mcc.lab.tt:8000/recommendLettuce/-61.40023168893231&10.641046689163778&1000',
         });
         this.ctaLayer.setMap(this.map);
+        loader.dismiss();
       }
     });
     modal.present();

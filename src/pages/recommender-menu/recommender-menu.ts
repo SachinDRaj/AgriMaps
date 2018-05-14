@@ -1,13 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 
-/**
- * Generated class for the RecommenderMenuPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-recommender-menu',
@@ -15,7 +8,7 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 })
 export class RecommenderMenuPage {
 
-  radius: any;
+  radius = 1000;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl: ViewController) {
   }

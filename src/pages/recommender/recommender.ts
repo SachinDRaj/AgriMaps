@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, ModalController, ToastController, NavParams } from 'ionic-angular';
+import { NavController, ModalController, ToastController, LoadingController } from 'ionic-angular';
 import { SettingsPage } from '../settings/settings';
 import { RecommenderMenuPage } from '../recommender-menu/recommender-menu';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -19,7 +19,7 @@ export class RecommenderPage {
   ctaLayer: any;
   subtitle = "Tomatoes";
 
-  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public navParams: NavParams) {
+  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController) {
 
   }
 
@@ -101,8 +101,14 @@ export class RecommenderPage {
     var entireUrl;
     let modal = this.modalCtrl.create(RecommenderMenuPage);
     modal.onDidDismiss(data=> {
-      console.log(data);
+
+      // console.log(data);
       if (data.catUrl != 0 ){
+        let loader = this.loadingCtrl.create({
+          content: "Loading Map...",
+          spinner: 'bubbles',
+        });
+        loader.present();
         entireUrl= this.dUrl+data.catUrl+"/"+lng+"&"+lat+"&"+data.rad;
         console.log(entireUrl);
         this.subtitle = data.subtitle;
@@ -113,6 +119,7 @@ export class RecommenderPage {
         });
 
         this.ctaLayer.setMap(this.map);
+        loader.dismiss();     
       }
     });
     modal.present();
