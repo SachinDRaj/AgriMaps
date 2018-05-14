@@ -4,7 +4,7 @@
       Land Profiles
     </ion-title>
     <ion-buttons start>
-      <button ion-button (click)="dismiss()">
+      <button ion-button (click)="dismiss(0)">
         <ion-icon name="ios-arrow-back" showWhen="ios"><span ion-text> Back</span></ion-icon>
         <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
       </button>
@@ -17,7 +17,7 @@
   <ion-list>
     <ion-item class="rBg">
       <ion-label stacked>Radius request size in Metres</ion-label>
-      <ion-input type="number" placeholder="1000"></ion-input>
+      <ion-input type="number" placeholder="1000" [(ngModel)]="radius" value="1000"></ion-input>
     </ion-item>
   </ion-list>
 
@@ -25,14 +25,14 @@
   <ion-grid>
     <ion-row>
       <ion-col col-6>
-        <ion-card class="iCard" (click)="goToMap()">
+        <ion-card class="iCard" (click)="dismiss('rivers','Rivers')">
           <!-- <img src="assets/imgs/tomato.jpg" height="100px" width="100px"/> -->
           <div class="card-title">Rivers</div>
         </ion-card>
       </ion-col>
 
       <ion-col col-6>
-        <ion-card class="iCard" (click)="goToMap()">
+        <ion-card class="iCard" (click)="dismiss('soilCapability','Soil Series')">
           <!-- <img src="assets/imgs/tomato.jpg" height="100px" width="100px"/> -->
           <div class="card-title">Soil Series</div>
         </ion-card>
@@ -42,14 +42,14 @@
 
     <ion-row>
       <ion-col col-6>
-        <ion-card class="iCard" (click)="goToMap()">
+        <ion-card class="iCard" (click)="dismiss('roads','Roads')">
           <!-- <img src="assets/imgs/tomato.jpg" height="100px" width="100px"/> -->
           <div class="card-title">Roads</div>
         </ion-card>
       </ion-col>
 
       <ion-col col-6>
-        <ion-card class="iCard" (click)="goToMap()">
+        <ion-card class="iCard" (click)="dismiss('contours','Contours')">
           <!-- <img src="assets/imgs/tomato.jpg" height="100px" width="100px"/> -->
           <div class="card-title">Contours</div>
         </ion-card>
@@ -59,14 +59,14 @@
 
     <ion-row>
       <ion-col col-6>
-        <ion-card class="iCard" (click)="goToMap()">
+        <ion-card class="iCard" (click)="dismiss('rainfall','Rainfall')">
           <!-- <img src="assets/imgs/tomato.jpg" height="100px" width="100px"/> -->
           <div class="card-title">Rainfall</div>
         </ion-card>
       </ion-col>
 
       <ion-col col-6>
-        <ion-card class="iCard" (click)="goToMap()">
+        <ion-card class="iCard" (click)="dismiss('landUse','Land Use')">
           <!-- <img src="assets/imgs/tomato.jpg" height="100px" width="100px"/> -->
           <div class="card-title">Land Use</div>
         </ion-card>

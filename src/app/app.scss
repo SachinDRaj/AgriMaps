@@ -32,5 +32,14 @@ ion-icon {
     }
     &[class*="custom-icon2"] {
         mask-image: url(../assets/imgs/ic_recommender.png);
-    }    
+    }
+}
+
+.toolbar-title {
+  overflow: visible;
+  position: relative;
+  .subtitle {
+    font-size: 66%;
+    margin: 0;
+  }
 }

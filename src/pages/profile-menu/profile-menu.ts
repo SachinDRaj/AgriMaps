@@ -10,6 +10,8 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 })
 export class ProfileMenuPage {
 
+  radius: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl: ViewController) {
   }
 
@@ -17,8 +19,12 @@ export class ProfileMenuPage {
     console.log('ionViewDidLoad ProfileMenuPage');
   }
 
-  dismiss() {
-    this.viewCtrl.dismiss();
+  dismiss(item,subtitle) {
+    this.viewCtrl.dismiss({
+      catUrl: item,
+      rad: this.radius,
+      subtitle: subtitle
+    });
   }
 
   goToMap(){

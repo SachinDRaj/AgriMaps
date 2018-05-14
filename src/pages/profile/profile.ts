@@ -15,6 +15,9 @@ export class ProfilePage {
 
   @ViewChild('map') mapRef: ElementRef;
   map: any;
+  dUrl = 'http://mcc.lab.tt:8000/';
+  ctaLayer: any;
+  subtitle = "Soil Series";
 
   constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController) {
 
@@ -48,35 +51,35 @@ export class ProfilePage {
 
       this.map = new google.maps.Map(this.mapRef.nativeElement, mapOptions);
 
-      var triangleCoords = [
-        {lat: 25.774, lng: -80.190},
-        {lat: 18.466, lng: -66.118},
-        {lat: 32.321, lng: -64.757},
-        {lat: 25.774, lng: -80.190}
-      ];
-
-      // Construct the polygon.
-      var bermudaTriangle = new google.maps.Polygon({
-        paths: triangleCoords,
-        strokeColor: '#FF0000',
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: '#FF0000',
-        fillOpacity: 0.35
-      });
-      bermudaTriangle.setMap(this.map);
-
-      var marker = new google.maps.Marker({
-          position: {lat: 10.536421, lng: -61.311951},
-      });
-
-      marker.setMap(this.map);
-
-      // var ctaLayer = new google.maps.KmlLayer({
-      //     url:'https://sites.google.com/site/agrimapskml/dockml/doc.kml?attredirects=0&d=1',
+      // var triangleCoords = [
+      //   {lat: 25.774, lng: -80.190},
+      //   {lat: 18.466, lng: -66.118},
+      //   {lat: 32.321, lng: -64.757},
+      //   {lat: 25.774, lng: -80.190}
+      // ];
+      //
+      // // Construct the polygon.
+      // var bermudaTriangle = new google.maps.Polygon({
+      //   paths: triangleCoords,
+      //   strokeColor: '#FF0000',
+      //   strokeOpacity: 0.8,
+      //   strokeWeight: 2,
+      //   fillColor: '#FF0000',
+      //   fillOpacity: 0.35
+      // });
+      // bermudaTriangle.setMap(this.map);
+      //
+      // var marker = new google.maps.Marker({
+      //     position: {lat: 10.536421, lng: -61.311951},
       // });
       //
-      // ctaLayer.setMap(this.map);
+      // marker.setMap(this.map);
+
+      this.ctaLayer = new google.maps.KmlLayer({
+          url:'http://mcc.lab.tt:8000/soilCapability/-61.40023168893231&10.641046689163778&1000',
+      });
+
+      this.ctaLayer.setMap(this.map);
 
 
     // }, (err) => {
@@ -93,7 +96,24 @@ export class ProfilePage {
   }
 
   openPMenu(){
+    var lng = -61.40023168893231;
+    var lat = 10.641046689163778;
+    var entireUrl;
     let modal = this.modalCtrl.create(ProfileMenuPage);
+    modal.onDidDismiss(data=> {
+      console.log(data);
+      if (data.catUrl != 0 ){
+        entireUrl= this.dUrl+data.catUrl+"/"+lng+"&"+lat+"&"+data.rad;
+        // console.log(entireUrl);
+        this.subtitle = data.subtitle;
+        this.ctaLayer.setMap(null);
+        this.ctaLayer = new google.maps.KmlLayer({
+            url: entireUrl,
+            // url:'http://mcc.lab.tt:8000/recommendLettuce/-61.40023168893231&10.641046689163778&1000',
+        });
+        this.ctaLayer.setMap(this.map);
+      }
+    });
     modal.present();
   }
 
