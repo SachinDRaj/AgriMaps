@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, ModalController, ToastController, LoadingController } from 'ionic-angular';
+import { NavController, ModalController, ToastController, LoadingController, AlertController } from 'ionic-angular';
 import { ProfileMenuPage } from '../profile-menu/profile-menu';
 import { SettingsPage } from '../settings/settings';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -18,8 +18,12 @@ export class ProfilePage {
   dUrl = 'http://mcc.lab.tt:8000/';
   ctaLayer: any;
   subtitle = "Soil Series";
+  latitude = 10.641046689163778;
+  longitude = -61.40023168893231;
+  catUrl = 'soilCapability';
+  radius = 1000;
 
-  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation) {
 
   }
 
@@ -27,7 +31,8 @@ export class ProfilePage {
     let toast = this.toastCtrl.create({
             message: 'Now in Land Profile Mode',
             duration: 1000,
-            position: 'top'
+            position: 'middle'
+            // cssClass: "toastAfterHeader"
         });
     toast.present();
   }
@@ -36,39 +41,55 @@ export class ProfilePage {
     this.showmap();
   }
 
+  presentConfirm(lat,lng) {
+    var entireUrl;
+    let alert = this.alertCtrl.create({
+      title: 'Change Location',
+      message: 'Would you like to set this location as the new point of interest?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log('Yes clicked');
+            let loader = this.loadingCtrl.create({
+              content: "Loading Map...",
+              spinner: 'bubbles',
+            });
+            loader.present();
+            this.latitude = lat;
+            this.longitude = lng;
+            entireUrl = this.dUrl+this.catUrl+"/"+this.longitude+"&"+this.latitude+"&"+this.radius;
+            this.ctaLayer.setMap(null);
+            this.ctaLayer = new google.maps.KmlLayer({
+                url: entireUrl,
+            });
+            this.ctaLayer.setMap(this.map);
+            loader.dismiss();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
   showmap(){
-    // this.geolocation.getCurrentPosition().then((position) => {
-
-      // let latLng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-
       let mapOptions = {
         center: {lat: 10.536421, lng: -61.311951},
         zoom: 10,
         zoomControl: true,
         fullscreenControl:false,
+        disableDoubleClickZoom: true,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       }
 
       this.map = new google.maps.Map(this.mapRef.nativeElement, mapOptions);
-
-      // var triangleCoords = [
-      //   {lat: 25.774, lng: -80.190},
-      //   {lat: 18.466, lng: -66.118},
-      //   {lat: 32.321, lng: -64.757},
-      //   {lat: 25.774, lng: -80.190}
-      // ];
-      //
-      // // Construct the polygon.
-      // var bermudaTriangle = new google.maps.Polygon({
-      //   paths: triangleCoords,
-      //   strokeColor: '#FF0000',
-      //   strokeOpacity: 0.8,
-      //   strokeWeight: 2,
-      //   fillColor: '#FF0000',
-      //   fillOpacity: 0.35
-      // });
-      // bermudaTriangle.setMap(this.map);
-      //
       // var marker = new google.maps.Marker({
       //     position: {lat: 10.536421, lng: -61.311951},
       // });
@@ -81,13 +102,37 @@ export class ProfilePage {
 
       this.ctaLayer.setMap(this.map);
 
+      this.map.addListener('dblclick', (event)=>{
+        console.log(event.latLng.lat());
+        console.log(event.latLng.lng());
+        this.presentConfirm(event.latLng.lat(),event.latLng.lng());
+      });
 
-    // }, (err) => {
-    //   console.log(err);
-    // });
+  }
 
-    // const location = new google.maps.LatLng(10.536421,-61.311951); trinidad coordinates
+  useCurrentLocation(){
+    var entireUrl;
+    let loader = this.loadingCtrl.create({
+      content: "Determing your location and generating map....",
+      spinner: 'bubbles',
+    });
+    loader.present();
 
+    this.geolocation.getCurrentPosition().then((position) => {
+      let latLng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+      this.latitude = position.coords.latitude;
+      this.longitude = position.coords.longitude;
+      entireUrl = this.dUrl+this.catUrl+"/"+this.longitude+"&"+this.latitude+"&"+this.radius;
+      this.ctaLayer.setMap(null);
+      this.ctaLayer = new google.maps.KmlLayer({
+          url: entireUrl,
+      });
+      this.ctaLayer.setMap(this.map);
+      loader.dismiss();
+    }, (err) => {
+      loader.dismiss();
+      console.log(err);
+    });
 
   }
 
@@ -96,11 +141,11 @@ export class ProfilePage {
   }
 
   openPMenu(){
-    var lng = -61.40023168893231;
-    var lat = 10.641046689163778;
+    // var lng = -61.40023168893231;
+    // var lat = 10.641046689163778;
     var entireUrl;
     let modal = this.modalCtrl.create(ProfileMenuPage);
-    modal.onDidDismiss(data=> {    
+    modal.onDidDismiss(data=> {
       // console.log(data);
       if (data.catUrl != 0 ){
         let loader = this.loadingCtrl.create({
@@ -108,8 +153,10 @@ export class ProfilePage {
           spinner: 'bubbles',
         });
         loader.present();
-        entireUrl= this.dUrl+data.catUrl+"/"+lng+"&"+lat+"&"+data.rad;
-        // console.log(entireUrl);
+        this.catUrl = data.catUrl;
+        this.radius = data.rad;
+        entireUrl= this.dUrl+data.catUrl+"/"+this.longitude+"&"+this.latitude+"&"+data.rad;
+        console.log(entireUrl);
         this.subtitle = data.subtitle;
         this.ctaLayer.setMap(null);
         this.ctaLayer = new google.maps.KmlLayer({
