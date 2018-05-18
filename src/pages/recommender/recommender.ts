@@ -58,11 +58,7 @@ export class RecommenderPage {
           text: 'Yes',
           handler: () => {
             console.log('Yes clicked');
-            let loader = this.loadingCtrl.create({
-              content: "Loading Map...",
-              spinner: 'bubbles',
-            });
-            loader.present();
+            let loader = this.presentLoader();
             this.latitude = lat;
             this.longitude = lng;
             entireUrl = this.dUrl+this.catUrl+"/"+this.longitude+"&"+this.latitude+"&"+this.radius;
@@ -71,7 +67,7 @@ export class RecommenderPage {
                 url: entireUrl,
             });
             this.ctaLayer.setMap(this.map);
-            loader.dismiss();
+            this.dismissLoader(loader);
           }
         }
       ]
@@ -148,11 +144,7 @@ export class RecommenderPage {
     modal.onDidDismiss(data=> {
       // console.log(data);
       if (data.catUrl != 0 ){
-        let loader = this.loadingCtrl.create({
-          content: "Loading Map...",
-          spinner: 'bubbles',
-        });
-        loader.present();
+        let loader = this.presentLoader();
         this.catUrl = data.catUrl;
         this.radius = data.rad;
         entireUrl= this.dUrl+data.catUrl+"/"+this.longitude+"&"+this.latitude+"&"+data.rad;
@@ -164,12 +156,25 @@ export class RecommenderPage {
             // url:'http://mcc.lab.tt:8000/recommendLettuce/-61.40023168893231&10.641046689163778&1000',
         });
         this.ctaLayer.setMap(this.map);
-        setTimeout(() => {
-          loader.dismiss();
-        }, 3000);
+        this.dismissLoader(loader);
       }
     });
     modal.present();
+  }
+
+  presentLoader(){
+    let loader = this.loadingCtrl.create({
+      content: "Loading Map...",
+      spinner: 'bubbles',
+    });
+    loader.present();
+    return loader;
+  }
+
+  dismissLoader(loader){
+    setTimeout(() => {
+      loader.dismiss();
+    }, 1000);
   }
 
 }
