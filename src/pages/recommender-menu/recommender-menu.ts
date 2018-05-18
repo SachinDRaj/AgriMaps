@@ -14,6 +14,7 @@ export class RecommenderMenuPage {
   }
 
   ionViewDidLoad() {
+    this.radius = this.navParams.get('param1');
     console.log('ionViewDidLoad RecommenderMenuPage');
   }
 

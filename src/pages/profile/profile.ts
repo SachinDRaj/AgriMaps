@@ -24,7 +24,8 @@ export class ProfilePage {
   radius = 1000;
 
   constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation) {
-
+    // this.locFrom = this.navParams.get('param1');
+    // this.navCtrl.push(LoginPage,{param1: 0});
   }
 
   ionViewDidEnter(){
@@ -140,7 +141,7 @@ export class ProfilePage {
     // var lng = -61.40023168893231;
     // var lat = 10.641046689163778;
     var entireUrl;
-    let modal = this.modalCtrl.create(ProfileMenuPage);
+    let modal = this.modalCtrl.create(ProfileMenuPage,{param1: this.radius});
     modal.onDidDismiss(data=> {
       // console.log(data);
       if (data.catUrl != 0 ){

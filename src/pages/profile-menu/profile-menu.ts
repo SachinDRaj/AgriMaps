@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 // import { ProfilePage } from '../profile/profile';
 // import { TabsPage } from '../tabs/tabs';
 
@@ -16,6 +16,7 @@ export class ProfileMenuPage {
   }
 
   ionViewDidLoad() {
+    this.radius = this.navParams.get('param1');
     console.log('ionViewDidLoad ProfileMenuPage');
   }
 

@@ -140,7 +140,7 @@ export class RecommenderPage {
     // var lng = -61.40023168893231;
     // var lat = 10.641046689163778;
     var entireUrl;
-    let modal = this.modalCtrl.create(RecommenderMenuPage);
+    let modal = this.modalCtrl.create(RecommenderMenuPage,{param1: this.radius});
     modal.onDidDismiss(data=> {
       // console.log(data);
       if (data.catUrl != 0 ){
