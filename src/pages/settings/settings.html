@@ -30,7 +30,7 @@
           <p class="iHeader">Fetch Radius</p>
         </ion-col>
         <ion-col col-8>
-          <p>The application at default fetches all data in a range of 1000 meteres from location. To change this please tap the app button in bar and set the radius fetch to desired number.</p>
+          <p>This application, at default fetches all data in a range of 1000 metres from location specified. To change this please tap the app button on the top navigation bar and set the radius to desired number and choose the catergory you would like the data to be generated for.</p>
         </ion-col>
       </ion-row>
       <ion-row class="iBorder">
@@ -38,7 +38,7 @@
           <p class="iHeader">Profile Mode / Recommender Mode</p>
         </ion-col>
         <ion-col col-8>
-          <p>To switch the application between the default profile mode and the recommender mode, tap the R or P button in the tab bar. After tapping this button a notice will appear at the bottom of your screen and the views app menu will change.</p>
+          <p>To switch the application between the default profile mode and the recommender mode, tap the R or P button on the bottom tab bar. After tapping this button a notification will appear at the middle of your screen notifying you of which mode you are in.</p>
         </ion-col>
       </ion-row>
       <ion-row class="iBorder">
@@ -46,7 +46,7 @@
           <p class="iHeader">Location</p>
         </ion-col>
         <ion-col col-8>
-          <p>To change the location of interest, double click screen at desired point. A prompt will appear to confirm that you would like to change the interest location to that point.</p>
+          <p>To change the location of interest, double click the screen at any desired point. A prompt will appear to confirm that you would like to change the point of interest to the location specified.</p>
         </ion-col>
       </ion-row>
       <button ion-button outline color="dark" (click)="openWelcome()">View Welcome Screen</button>
@@ -65,7 +65,7 @@
 
     <ion-grid *ngSwitchCase="'about'">
       <img  class="aboutImg1" src="assets/imgs/logo_agrinet.png"/>
-      <ion-row>
+      <ion-row class="about">
         <ion-col>
           <p>AgriMaps is developed as part of an Agriculture ICT project called AgriNeTT.</p>
           <p>AgriNeTT is a project of the St.Augustine campus of The University of the West Indies and is funded by the UWI-Trinidad and Tobago Research and Development Impact(RDI) Fund.</p>

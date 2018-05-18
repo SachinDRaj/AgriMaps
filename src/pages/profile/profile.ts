@@ -164,7 +164,9 @@ export class ProfilePage {
             // url:'http://mcc.lab.tt:8000/recommendLettuce/-61.40023168893231&10.641046689163778&1000',
         });
         this.ctaLayer.setMap(this.map);
-        loader.dismiss();
+        setTimeout(() => {
+          loader.dismiss();
+        }, 3000);
       }
     });
     modal.present();

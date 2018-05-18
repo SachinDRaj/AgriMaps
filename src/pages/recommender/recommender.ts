@@ -153,6 +153,8 @@ export class RecommenderPage {
           spinner: 'bubbles',
         });
         loader.present();
+        this.catUrl = data.catUrl;
+        this.radius = data.rad;
         entireUrl= this.dUrl+data.catUrl+"/"+this.longitude+"&"+this.latitude+"&"+data.rad;
         console.log(entireUrl);
         this.subtitle = data.subtitle;
@@ -161,9 +163,10 @@ export class RecommenderPage {
             url: entireUrl,
             // url:'http://mcc.lab.tt:8000/recommendLettuce/-61.40023168893231&10.641046689163778&1000',
         });
-
         this.ctaLayer.setMap(this.map);
-        loader.dismiss();
+        setTimeout(() => {
+          loader.dismiss();
+        }, 3000);
       }
     });
     modal.present();
