@@ -22,6 +22,8 @@ export class RecommenderPage {
   longitude = -61.40023168893231;
   catUrl = 'recommendTomato';
   radius = 1000;
+  name: any;
+  desc: any;
 
   constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation) {
 
@@ -65,6 +67,7 @@ export class RecommenderPage {
             this.ctaLayer.setMap(null);
             this.ctaLayer = new google.maps.KmlLayer({
                 url: entireUrl,
+                suppressInfoWindows: true
             });
             this.ctaLayer.setMap(this.map);
             this.dismissLoader(loader);
@@ -76,6 +79,29 @@ export class RecommenderPage {
   }
 
   showmap(){
+      // var name;
+      // var des;
+      var contentString = '<div id="content">'+
+          '<div id="siteNotice">'+
+          '</div>'+
+          '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+          '<div id="bodyContent">'+
+          '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+          'sandstone rock formation in the southern part of the '+
+          'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
+          'south west of the nearest large town, Alice Springs; 450&#160;km '+
+          '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
+          'features of the Uluru - Kata Tjuta National Park. Uluru is '+
+          'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
+          'Aboriginal people of the area. It has many springs, waterholes, '+
+          'rock caves and ancient paintings. Uluru is listed as a World '+
+          'Heritage Site.</p>'+
+          '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
+          'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+          '(last visited June 22, 2009).</p>'+
+          '</div>'+
+          '</div>';
+
       let mapOptions = {
         center: {lat: 10.536421, lng: -61.311951},
         zoom: 10,
@@ -86,17 +112,90 @@ export class RecommenderPage {
       }
 
       this.map = new google.maps.Map(this.mapRef.nativeElement, mapOptions);
+
+
+
       // var marker = new google.maps.Marker({
       //     position: {lat: 10.536421, lng: -61.311951},
       // });
-
+      //
       // marker.setMap(this.map);
+      //
+      // marker.addListener('click', function() {
+      //     infowindow.open(this.map, marker);
+      // });
 
       this.ctaLayer = new google.maps.KmlLayer({
           url:'http://mcc.lab.tt:8000/recommendTomato/-61.40023168893231&10.641046689163778&1000',
+          suppressInfoWindows: true
       });
 
       this.ctaLayer.setMap(this.map);
+
+      function descriptionBuilder(des){
+        var desc = "";
+        var phStatus = "";
+        if (des[0].localeCompare("3")==0) {
+          phStatus = "Soil is too Alkaline";
+        }else if (des[0].localeCompare("1")==0){
+          phStatus = "Soil is too Acidic"
+        }else{
+          phStatus = "Soil pH is Optimal";
+        }
+
+        var ecStatus = "";
+        if (des[1].localeCompare("3")==0) {
+          ecStatus = "<br>EC is higher than Optimal";
+        }else if (des[1].localeCompare("1")==0){
+          ecStatus = "<br>EC is lower than Optimal"
+        }else{
+          ecStatus = "<br>EC is Optimal";
+        }
+
+        var scStatus = "";
+        if (des[2].localeCompare("3")==0) {
+          scStatus = "<br>Soil composition is not ideal";
+        }else if (des[2].localeCompare("1")==0){
+          scStatus = "<br>Soil composition is not ideal"
+        }else{
+          scStatus = "<br>Soil composition is Optimal";
+        }
+
+        var rainStatus = "";
+        if (des[3].localeCompare("3")==0) {
+          rainStatus = "<br>There is too much Rainfall";
+        }else if (des[3].localeCompare("1")==0){
+          rainStatus = "<br>There is insufficient Rainfall"
+        }else{
+          rainStatus = "<br>Rainfall amount is Optimal";
+        }
+
+        desc = phStatus+ecStatus+scStatus+rainStatus;
+        return desc;
+      }
+
+      this.ctaLayer.addListener('click', function(kmlEvent) {
+
+        this.desc = kmlEvent.featureData.description;
+        this.name = kmlEvent.featureData.name;
+        var des = this.desc.split(',');
+        var description = descriptionBuilder(des);
+        console.log(this.desc);
+        // console.log(this.name);
+
+        contentString = '<div>'+
+            '<h5 id="firstHeading" class="firstHeading">'+this.name+'</h5>'+
+            '<p>'+description+'</p>'+
+            '</div>';
+
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+
+        infowindow.setPosition({lat: kmlEvent.latLng.lat(), lng: kmlEvent.latLng.lng()});
+        infowindow.open(this.map);
+
+      });
 
       this.map.addListener('dblclick', (event)=>{
         console.log(event.latLng.lat());
@@ -104,6 +203,48 @@ export class RecommenderPage {
         this.presentConfirm(event.latLng.lat(),event.latLng.lng());
       });
 
+  }
+
+  descriptionBuilder(des){
+    var desc = "";
+    var phStatus = "";
+    if (des[0].localeCompare("3")==0) {
+      phStatus = "Soil is too Alkaline";
+    }else if (des[0].localeCompare("1")==0){
+      phStatus = "Soil is too Acidic"
+    }else{
+      phStatus = "Soil pH is Optimal";
+    }
+
+    var ecStatus = "";
+    if (des[1].localeCompare("3")==0) {
+      ecStatus = "<br>EC is higher than Optimal";
+    }else if (des[1].localeCompare("1")==0){
+      ecStatus = "<br>EC is lower than Optimal"
+    }else{
+      ecStatus = "<br>EC is Optimal";
+    }
+
+    var scStatus = "";
+    if (des[2].localeCompare("3")==0) {
+      scStatus = "<br>Soil composition is not ideal";
+    }else if (des[2].localeCompare("1")==0){
+      scStatus = "<br>Soil composition is not ideal"
+    }else{
+      scStatus = "<br>Soil composition is Optimal";
+    }
+
+    var rainStatus = "";
+    if (des[3].localeCompare("3")==0) {
+      rainStatus = "<br>There is too much Rainfall";
+    }else if (des[3].localeCompare("1")==0){
+      rainStatus = "<br>There is insufficient Rainfall"
+    }else{
+      rainStatus = "<br>Rainfall amount is Optimal";
+    }
+
+    desc = phStatus+ecStatus+scStatus+rainStatus;
+    return desc;
   }
 
   useCurrentLocation(){
@@ -122,6 +263,7 @@ export class RecommenderPage {
       this.ctaLayer.setMap(null);
       this.ctaLayer = new google.maps.KmlLayer({
           url: entireUrl,
+          suppressInfoWindows: true
       });
       this.ctaLayer.setMap(this.map);
       loader.dismiss();
@@ -137,8 +279,6 @@ export class RecommenderPage {
   }
 
   openRMenu(){
-    // var lng = -61.40023168893231;
-    // var lat = 10.641046689163778;
     var entireUrl;
     let modal = this.modalCtrl.create(RecommenderMenuPage,{param1: this.radius});
     modal.onDidDismiss(data=> {
@@ -153,9 +293,75 @@ export class RecommenderPage {
         this.ctaLayer.setMap(null);
         this.ctaLayer = new google.maps.KmlLayer({
             url: entireUrl,
-            // url:'http://mcc.lab.tt:8000/recommendLettuce/-61.40023168893231&10.641046689163778&1000',
+            suppressInfoWindows: true
         });
         this.ctaLayer.setMap(this.map);
+
+        function descriptionBuilder(des){
+          var desc = "";
+          var phStatus = "";
+          if (des[0].localeCompare("3")==0) {
+            phStatus = "Soil is too Alkaline";
+          }else if (des[0].localeCompare("1")==0){
+            phStatus = "Soil is too Acidic"
+          }else{
+            phStatus = "Soil pH is Optimal";
+          }
+
+          var ecStatus = "";
+          if (des[1].localeCompare("3")==0) {
+            ecStatus = "<br>EC is higher than Optimal";
+          }else if (des[1].localeCompare("1")==0){
+            ecStatus = "<br>EC is lower than Optimal"
+          }else{
+            ecStatus = "<br>EC is Optimal";
+          }
+
+          var scStatus = "";
+          if (des[2].localeCompare("3")==0) {
+            scStatus = "<br>Soil composition is not ideal";
+          }else if (des[2].localeCompare("1")==0){
+            scStatus = "<br>Soil composition is not ideal"
+          }else{
+            scStatus = "<br>Soil composition is Optimal";
+          }
+
+          var rainStatus = "";
+          if (des[3].localeCompare("3")==0) {
+            rainStatus = "<br>There is too much Rainfall";
+          }else if (des[3].localeCompare("1")==0){
+            rainStatus = "<br>There is insufficient Rainfall"
+          }else{
+            rainStatus = "<br>Rainfall amount is Optimal";
+          }
+
+          desc = phStatus+ecStatus+scStatus+rainStatus;
+          return desc;
+        }
+
+        this.ctaLayer.addListener('click', function(kmlEvent) {
+
+          this.desc = kmlEvent.featureData.description;
+          this.name = kmlEvent.featureData.name;
+          var des = this.desc.split(',');
+          var description = descriptionBuilder(des);
+          console.log(this.desc);
+          // console.log(this.name);
+
+          var contentString = '<div>'+
+              '<h5 id="firstHeading" class="firstHeading">'+this.name+'</h5>'+
+              '<p>'+description+'</p>'+
+              '</div>';
+
+          var infowindow = new google.maps.InfoWindow({
+              content: contentString
+          });
+
+          infowindow.setPosition({lat: kmlEvent.latLng.lat(), lng: kmlEvent.latLng.lng()});
+          infowindow.open(this.map);
+
+        });
+
         this.dismissLoader(loader);
       }
     });

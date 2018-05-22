@@ -99,6 +99,13 @@ export class ProfilePage {
 
       this.ctaLayer.setMap(this.map);
 
+      this.ctaLayer.addListener('click', function(kmlEvent) {
+        var text = kmlEvent.featureData.description;
+        var name = kmlEvent.featureData.name;
+        console.log(text);
+        console.log(name);
+      });
+
       this.map.addListener('dblclick', (event)=>{
         console.log(event.latLng.lat());
         console.log(event.latLng.lng());
@@ -157,6 +164,16 @@ export class ProfilePage {
             // url:'http://mcc.lab.tt:8000/recommendLettuce/-61.40023168893231&10.641046689163778&1000',
         });
         this.ctaLayer.setMap(this.map);
+
+        // google.maps.event.addListener(this.ctaLayer, 'status_changed', function () {
+        //     if (this.ctaLayer.getStatus() == google.maps.KmlLayerStatus.OK) {
+        //         alert("hi");
+        //     }
+        //     else {
+        //         alert("die");
+        //     }
+        // });
+
         this.dismissLoader(loader);
       }
     });
