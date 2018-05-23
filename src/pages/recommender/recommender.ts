@@ -112,14 +112,14 @@ export class RecommenderPage {
       phStatus = "Soil pH is Optimal";
     }
 
-    var ecStatus = "";
-    if (des[1].localeCompare("3")==0) {
-      ecStatus = "<br>EC is higher than Optimal";
-    }else if (des[1].localeCompare("1")==0){
-      ecStatus = "<br>EC is lower than Optimal"
-    }else{
-      ecStatus = "<br>EC is Optimal";
-    }
+    // var ecStatus = "";
+    // if (des[1].localeCompare("3")==0) {
+    //   ecStatus = "<br>EC is higher than Optimal";
+    // }else if (des[1].localeCompare("1")==0){
+    //   ecStatus = "<br>EC is lower than Optimal"
+    // }else{
+    //   ecStatus = "<br>EC is Optimal";
+    // }
 
     var scStatus = "";
     if (des[2].localeCompare("3")==0) {
@@ -139,7 +139,7 @@ export class RecommenderPage {
       rainStatus = "<br>Rainfall amount is Optimal";
     }
 
-    desc = phStatus+ecStatus+scStatus+rainStatus;
+    desc = phStatus+scStatus+rainStatus;
     return desc;
   }
 
@@ -174,26 +174,118 @@ export class RecommenderPage {
         console.log(this.desc);
         // console.log(this.name);
 
-        var contentString = '<div>'+
+        let contentString = '<div>'+
             '<h5 id="firstHeading" class="firstHeading">'+this.name+'</h5>'+
             '<p>'+description+'</p>'+
+            '<button id="tap">View Recommendation</button>'+
             '</div>';
 
-        var infowindow = new google.maps.InfoWindow({
+        let infowindow = new google.maps.InfoWindow({
             content: contentString
         });
 
         infowindow.setPosition({lat: kmlEvent.latLng.lat(), lng: kmlEvent.latLng.lng()});
         infowindow.open(this.map);
 
+        google.maps.event.addListenerOnce(infowindow, 'domready', () => {
+          document.getElementById('tap').addEventListener('click', () => {
+            console.log("touch");
+            this.presentRecommendation(this.determineRecommendation(des));
+          });
+        });
       });
-
       loader.dismiss();
     }, (err) => {
       loader.dismiss();
+      alert("Error determining location try again.");
       console.log(err);
     });
 
+  }
+
+  determineRecommendation(des){
+    var info="";
+    var phCheck = 0;
+    var highErain = 0;
+    var lowErain = 0;
+    //soil pH
+    if (des[5]>des[4]){
+      info+="Soil is too Alkaline.The actual pH is "+des[5]+" while the recommended range is "+des[6]+"-"+des[4]+". Seek professional assistance on this issue.";
+      phCheck = 1;
+    }else if(des[5]<des[6]){
+      info+="Soil is too Acidic.The actual pH is "+des[5]+" while the recommended range is "+des[6]+"-"+des[4]+". To raise the pH of the soil, do a lime requirement test and apply lime.";
+      phCheck = 1;
+    }else{
+      //do nothing
+    }
+
+    //soil composition
+    if (des[9]>des[10]){
+      if(phCheck == 1){
+        info+="<br><br>";
+      }
+      info+="The soil is made up of "+des[9]+"% Clay which is more than the recommended amount of "+des[10]+"%. Install drainage channels to improve composition";
+      phCheck = 1;
+    }else if(des[9]<des[11]){
+      if(phCheck == 1){
+        info+="<br><br>";
+      }
+      info+="The soil is made up of "+des[9]+"% Clay which is less that the recommended amount of "+des[11]+"%. Irrigate soil to maintain adequate moisture.";
+      phCheck = 1;
+    }else{
+      // do nothing
+    }
+
+    // determine expected Rainfall
+    if(des[14]==1){
+      highErain = 1998;
+      lowErain = 1716;
+    }else if(des[14]==2){
+      highErain = 2166;
+      lowErain = 1999;
+    }else if(des[14]==3){
+      highErain = 2310;
+      lowErain = 2167;
+    }else if(des[14]==4){
+      highErain = 2478;
+      lowErain = 2311;
+    }else{
+      highErain = 2700;
+      lowErain = 2479;
+    }
+    //Rainfall
+    if (lowErain>des[12]){
+      if(phCheck == 1){
+        info+="<br><br>";
+      }
+      info+="There is too much Annual Rainfall at this location. Expected Rainfall: "+lowErain+"-"+highErain+"mm vs Recommended Rainfall for this crop: "+des[13]+"-"+des[12]+"mm. Install appropriate drainage to improve water flow.";
+    }else if(highErain<des[13]){
+      if(phCheck == 1){
+        info+="<br><br>";
+      }
+      info+="There is too little Annual Rainfall at this location. Expected Rainfall: "+lowErain+"-"+highErain+"mm vs Recommended Rainfall for this crop: "+des[13]+"-"+des[12]+"mm. Install an irrigation system.";
+    }else{
+      //do nothing
+    }
+
+    return info;
+  }
+
+  presentRecommendation(info){
+    let alert = this.alertCtrl.create({
+      title: 'Recommendation',
+      message: info,
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   openSettings(){
@@ -246,6 +338,7 @@ export class RecommenderPage {
       var contentString = '<div>'+
           '<h5 id="firstHeading" class="firstHeading">'+this.name+'</h5>'+
           '<p>'+description+'</p>'+
+          '<button id="tap">View Recommendation</button>'+
           '</div>';
 
       var infowindow = new google.maps.InfoWindow({
@@ -254,6 +347,13 @@ export class RecommenderPage {
 
       infowindow.setPosition({lat: kmlEvent.latLng.lat(), lng: kmlEvent.latLng.lng()});
       infowindow.open(this.map);
+
+      google.maps.event.addListenerOnce(infowindow, 'domready', () => {
+        document.getElementById('tap').addEventListener('click', () => {
+          console.log("touch");
+          this.presentRecommendation(this.determineRecommendation(des));
+        });
+      });
 
     });
 
@@ -292,6 +392,10 @@ export class RecommenderPage {
     setTimeout(() => {
       loader.dismiss();
     }, 1000);
+  }
+
+  openRecommendation(){
+    console.log("hello im working");
   }
 
 }
