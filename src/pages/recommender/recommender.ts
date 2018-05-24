@@ -24,6 +24,8 @@ export class RecommenderPage {
   radius = 1000;
   name: any;
   desc: any;
+  infowindow: any;
+  infoCheck = false;
 
   constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation) {
 
@@ -122,7 +124,9 @@ export class RecommenderPage {
     // }
 
     var scStatus = "";
-    if (des[2].localeCompare("3")==0) {
+    if ( parseFloat(des[9])<parseFloat(des[10]) && parseFloat(des[9])>parseFloat(des[11])){
+      scStatus = "<br>Soil composition is Optimal";
+    }else if (des[2].localeCompare("3")==0) {
       scStatus = "<br>Soil composition is not ideal";
     }else if (des[2].localeCompare("1")==0){
       scStatus = "<br>Soil composition is not ideal"
@@ -145,6 +149,7 @@ export class RecommenderPage {
 
 
   useCurrentLocation(check){
+    var contentString;
     var entireUrl;
     let loader = this.loadingCtrl.create({
       content: "Determing your location and generating map....",
@@ -157,8 +162,13 @@ export class RecommenderPage {
       this.latitude = position.coords.latitude;
       this.longitude = position.coords.longitude;
       entireUrl = this.dUrl+this.catUrl+"/"+this.longitude+"&"+this.latitude+"&"+this.radius;
-      if (check == 1)
+      if (check == 1){
+        if (this.infoCheck == true){
+          this.infowindow.close();
+          this.infoCheck = false;
+        }
         this.ctaLayer.setMap(null);
+      }
       this.ctaLayer = new google.maps.KmlLayer({
           url: entireUrl,
           suppressInfoWindows: true
@@ -166,7 +176,10 @@ export class RecommenderPage {
       this.ctaLayer.setMap(this.map);
 
       this.ctaLayer.addListener('click', (kmlEvent)=>{
-
+        if (this.infoCheck == true){
+          this.infowindow.close();
+          this.infoCheck = false;
+        }
         this.desc = kmlEvent.featureData.description;
         this.name = kmlEvent.featureData.name;
         var des = this.desc.split(',');
@@ -174,20 +187,31 @@ export class RecommenderPage {
         console.log(this.desc);
         // console.log(this.name);
 
-        let contentString = '<div>'+
+        let contentString1 = '<div>'+
             '<h5 id="firstHeading" class="firstHeading">'+this.name+'</h5>'+
             '<p>'+description+'</p>'+
             '<button id="tap">View Recommendation</button>'+
             '</div>';
 
-        let infowindow = new google.maps.InfoWindow({
+        let contentString2 = '<div>'+
+            '<h5 id="firstHeading" class="firstHeading">'+this.name+'</h5>'+
+            '<p>'+description+'</p>'+
+            '<button id="tap" hidden>View Recommendation</button>'+
+            '</div>';
+
+        if (parseInt(des[0])==2 && parseInt(des[2])==2 && parseInt(des[3])==2){
+          contentString = contentString2;
+        }else contentString = contentString1;
+
+        this.infowindow = new google.maps.InfoWindow({
             content: contentString
         });
 
-        infowindow.setPosition({lat: kmlEvent.latLng.lat(), lng: kmlEvent.latLng.lng()});
-        infowindow.open(this.map);
+        this.infowindow.setPosition({lat: kmlEvent.latLng.lat(), lng: kmlEvent.latLng.lng()});
+        this.infowindow.open(this.map);
+        this.infoCheck = true;
 
-        google.maps.event.addListenerOnce(infowindow, 'domready', () => {
+        google.maps.event.addListenerOnce(this.infowindow, 'domready', () => {
           document.getElementById('tap').addEventListener('click', () => {
             console.log("touch");
             this.presentRecommendation(this.determineRecommendation(des));
@@ -209,10 +233,10 @@ export class RecommenderPage {
     var highErain = 0;
     var lowErain = 0;
     //soil pH
-    if (des[5]>des[4]){
+    if (parseFloat(des[5])>parseFloat(des[4])){
       info+="Soil is too Alkaline.The actual pH is "+des[5]+" while the recommended range is "+des[6]+"-"+des[4]+". Seek professional assistance on this issue.";
       phCheck = 1;
-    }else if(des[5]<des[6]){
+    }else if(parseFloat(des[5])<parseFloat(des[6])){
       info+="Soil is too Acidic.The actual pH is "+des[5]+" while the recommended range is "+des[6]+"-"+des[4]+". To raise the pH of the soil, do a lime requirement test and apply lime.";
       phCheck = 1;
     }else{
@@ -220,16 +244,17 @@ export class RecommenderPage {
     }
 
     //soil composition
-    if (des[9]>des[10]){
+    if (parseFloat(des[9])>parseFloat(des[10])){
       if(phCheck == 1){
         info+="<br><br>";
       }
       info+="The soil is made up of "+des[9]+"% Clay which is more than the recommended amount of "+des[10]+"%. Install drainage channels to improve composition";
       phCheck = 1;
-    }else if(des[9]<des[11]){
+    }else if(parseFloat(des[9])<parseFloat(des[11])){
       if(phCheck == 1){
         info+="<br><br>";
       }
+      // console.log(parseFloat(des[9])>parseFloat(des[11]));
       info+="The soil is made up of "+des[9]+"% Clay which is less that the recommended amount of "+des[11]+"%. Irrigate soil to maintain adequate moisture.";
       phCheck = 1;
     }else{
@@ -254,12 +279,12 @@ export class RecommenderPage {
       lowErain = 2479;
     }
     //Rainfall
-    if (lowErain>des[12]){
+    if (lowErain>parseFloat(des[12])){
       if(phCheck == 1){
         info+="<br><br>";
       }
       info+="There is too much Annual Rainfall at this location. Expected Rainfall: "+lowErain+"-"+highErain+"mm vs Recommended Rainfall for this crop: "+des[13]+"-"+des[12]+"mm. Install appropriate drainage to improve water flow.";
-    }else if(highErain<des[13]){
+    }else if(highErain<parseFloat(des[13])){
       if(phCheck == 1){
         info+="<br><br>";
       }
@@ -310,6 +335,7 @@ export class RecommenderPage {
   }
 
   generateMap(catUrl,rad,subtitle,lat,lng){
+    var contentString;
     var entireUrl;
     let loader = this.presentLoader();
     this.catUrl = catUrl;
@@ -319,6 +345,11 @@ export class RecommenderPage {
     entireUrl= this.dUrl+catUrl+"/"+this.longitude+"&"+this.latitude+"&"+rad;
     console.log(entireUrl);
     this.subtitle = subtitle;
+
+    if (this.infoCheck == true){
+      this.infowindow.close();
+      this.infoCheck = false;
+    }
     this.ctaLayer.setMap(null);
     this.ctaLayer = new google.maps.KmlLayer({
         url: entireUrl,
@@ -327,6 +358,12 @@ export class RecommenderPage {
     this.ctaLayer.setMap(this.map);
 
     this.ctaLayer.addListener('click', (kmlEvent)=>{
+      if (this.infoCheck == true){
+        this.infowindow.close();
+        this.infoCheck = false;
+      }
+      var pm = kmlEvent.featureData;
+      console.log(pm);
 
       this.desc = kmlEvent.featureData.description;
       this.name = kmlEvent.featureData.name;
@@ -335,20 +372,31 @@ export class RecommenderPage {
       console.log(this.desc);
       // console.log(this.name);
 
-      var contentString = '<div>'+
+      let contentString1 = '<div>'+
           '<h5 id="firstHeading" class="firstHeading">'+this.name+'</h5>'+
           '<p>'+description+'</p>'+
           '<button id="tap">View Recommendation</button>'+
           '</div>';
 
-      var infowindow = new google.maps.InfoWindow({
+      let contentString2 = '<div>'+
+          '<h5 id="firstHeading" class="firstHeading">'+this.name+'</h5>'+
+          '<p>'+description+'</p>'+
+          '<button id="tap" hidden>View Recommendation</button>'+
+          '</div>';
+
+      if (parseInt(des[0])==2 && parseInt(des[2])==2 && parseInt(des[3])==2){
+        contentString = contentString2;
+      }else contentString = contentString1;
+
+      this.infowindow = new google.maps.InfoWindow({
           content: contentString
       });
 
-      infowindow.setPosition({lat: kmlEvent.latLng.lat(), lng: kmlEvent.latLng.lng()});
-      infowindow.open(this.map);
+      this.infowindow.setPosition({lat: kmlEvent.latLng.lat(), lng: kmlEvent.latLng.lng()});
+      this.infowindow.open(this.map);
+      this.infoCheck = true;
 
-      google.maps.event.addListenerOnce(infowindow, 'domready', () => {
+      google.maps.event.addListenerOnce(this.infowindow, 'domready', () => {
         document.getElementById('tap').addEventListener('click', () => {
           console.log("touch");
           this.presentRecommendation(this.determineRecommendation(des));
