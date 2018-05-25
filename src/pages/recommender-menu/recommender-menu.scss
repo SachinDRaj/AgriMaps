@@ -50,11 +50,12 @@ page-recommender-menu {
   .img1{
     border-radius: 10px;
     opacity: 0.9;
+    overflow: hidden;
   }
 
   .img2{
     height: 100px;
-    width: block;
+    // width: block;
   }
 
 }
