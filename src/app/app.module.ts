@@ -12,6 +12,7 @@ import { ProfileMenuPage } from '../pages/profile-menu/profile-menu';
 import { CropfamiliesPage } from '../pages/cropfamilies/cropfamilies';
 import { SoilseriesPage } from '../pages/soilseries/soilseries';
 import { WelcomescreenPage } from '../pages/welcomescreen/welcomescreen';
+import { LegendModalPage } from '../pages/legend-modal/legend-modal';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -29,6 +30,7 @@ import { HTTP } from '@ionic-native/http';
     CropfamiliesPage,
     SoilseriesPage,
     WelcomescreenPage,
+    LegendModalPage,
     TabsPage
   ],
   imports: [
@@ -46,6 +48,7 @@ import { HTTP } from '@ionic-native/http';
     CropfamiliesPage,
     SoilseriesPage,
     WelcomescreenPage,
+    LegendModalPage,
     TabsPage
   ],
   providers: [

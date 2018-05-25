@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, ModalController, ToastController, LoadingController, AlertController } from 'ionic-angular';
 import { ProfileMenuPage } from '../profile-menu/profile-menu';
+import { LegendModalPage } from '../legend-modal/legend-modal';
 import { SettingsPage } from '../settings/settings';
 import { Geolocation } from '@ionic-native/geolocation';
 import { HTTP } from '@ionic-native/http';
@@ -22,6 +23,7 @@ export class ProfilePage {
   longitude = -61.40023168893231;
   catUrl = 'soilCapability';
   radius = 1000;
+  isValid = true;
 
   constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation) {
     // this.locFrom = this.navParams.get('param1');
@@ -152,6 +154,13 @@ export class ProfilePage {
     modal.onDidDismiss(data=> {
       // console.log(data);
       if (data.catUrl != 0 ){
+
+        if (data.catUrl.localeCompare("soilCapability")==0 || data.catUrl.localeCompare("rainfall")==0 || data.catUrl.localeCompare("landUse")==0){
+          this.isValid = true;
+        }else{
+          this.isValid = false;
+        }
+
         let loader = this.presentLoader();
         this.catUrl = data.catUrl;
         this.radius = data.rad;
@@ -193,6 +202,21 @@ export class ProfilePage {
     setTimeout(() => {
       loader.dismiss();
     }, 1000);
+  }
+
+  openLegend(){
+    if (this.catUrl.localeCompare("soilCapability")==0){
+      let modal = this.modalCtrl.create(LegendModalPage,{param1: this.catUrl});
+      modal.present();
+    }else if (this.catUrl.localeCompare("rainfall")==0){
+      let modal = this.modalCtrl.create(LegendModalPage,{param1: this.catUrl});
+      modal.present();
+    }else if (this.catUrl.localeCompare("landUse")==0){
+      let modal = this.modalCtrl.create(LegendModalPage,{param1: this.catUrl});
+      modal.present();
+    }else{
+      //do nothing
+    }
   }
 
 }

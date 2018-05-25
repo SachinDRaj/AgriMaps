@@ -24,4 +24,18 @@
       <ion-icon name="locate"></ion-icon>
     </button>
   </ion-fab>
+
+  <!-- <ion-fab bottom left class="legend">
+    <button ion-fab color="white" mini (click)="useCurrentLocation()">
+      <ion-icon name="list-box"></ion-icon>
+    </button>
+  </ion-fab> -->
+
+  <ion-fab bottom left class="legend" *ngIf="isValid">
+    <button ion-fab hidden>
+    </button>
+    <button ion-button small color="white" (click)="openLegend()">
+      Legend
+    </button>
+  </ion-fab>
 </ion-content>
