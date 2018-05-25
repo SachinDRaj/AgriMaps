@@ -8,11 +8,10 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class LegendModalPage {
 
-  catUrl = "";
+  item = "";
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.catUrl = this.navParams.get('param1');
-    console.log(this.catUrl);
+    this.item = this.navParams.get('param1');
   }
 
   ionViewDidLoad() {

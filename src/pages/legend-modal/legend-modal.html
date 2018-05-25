@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar color="myGreen">
-    <ion-title>legendModal</ion-title>
+    <ion-title>Legend</ion-title>
     <ion-buttons start>
       <button ion-button (click)="dismiss()">
         <ion-icon name="ios-arrow-back" showWhen="ios"><span ion-text> Back</span></ion-icon>
@@ -13,6 +13,214 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content class="bg">
+  <div [ngSwitch]="item">
+    <ion-grid *ngSwitchCase="'soilCapability'">
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="soil1">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Class I: Soil has little to no limitations that restrict its use.</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="soil2">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Class II: Soil requires moderate conservation practices.</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="soil3">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Class III: Soil requires significant management intervention.</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="soil4">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Class IV: Soil has very severe limitations and requires very careful management.</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="soil5">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Class V: Soil is subject to little or no erosion but has other limitations which may make it unsuitable for crop cultivation.</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="soil6">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Class VI: Soil has severe limitations that make it unsuitable for cultivation but may be used for pasture, rangeland etc.</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="soil7">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Class VII: Soil has very severe limitations that make it unsuitable for cultivation but may be used for pasture, rangeland etc.</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="soil8">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Class VIII: Soil has very severe  limitations that preclude crop production and restricts it's use to recreational purposes, pasture, rangeland etc.</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
+<!-- ************************************************************************************************** -->
+
+    <ion-grid *ngSwitchCase="'rainfall'">
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="rain1">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Class 1: 1716-1998mm</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="rain2">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Class 2: 1999-2166mm</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="rain3">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Class 3: 2167-2310mm</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="rain4">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Class 4: 2311-2478mm</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="rain5">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Class 5: 2479-2700mm</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-12>
+          <p>All Rainfall Amounts are in Millimetres per year.</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+<!-- ************************************************************************************************** -->
+
+    <ion-grid *ngSwitchCase="'landUse'">
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="land1">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Forest</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="land2">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Grass Lands</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="land3">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Coconut Trees</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="land4">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Agriculture</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="land5">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Bamboo</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="land6">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Residential</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="land7">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Quarry</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="iBorder">
+        <ion-col col-2>
+          <div class="land8">
+          </div>
+        </ion-col>
+        <ion-col col-10>
+          <p>Other</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </div>
 </ion-content>
