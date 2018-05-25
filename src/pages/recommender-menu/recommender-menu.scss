@@ -20,6 +20,7 @@ page-recommender-menu {
     width: 100%;
     font-weight: bold;
     color: #fff;
+    text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;
   }
 
   .card-subtitle {
@@ -49,6 +50,11 @@ page-recommender-menu {
   .img1{
     border-radius: 10px;
     opacity: 0.9;
+  }
+
+  .img2{
+    height: 100px;
+    width: block;
   }
 
 }
