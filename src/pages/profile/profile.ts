@@ -94,19 +94,19 @@ export class ProfilePage {
       // });
       //
       // marker.setMap(this.map);
-
-      this.ctaLayer = new google.maps.KmlLayer({
-          url:'http://mcc.lab.tt:8000/soilCapability/-61.40023168893231&10.641046689163778&1000',
-      });
-
-      this.ctaLayer.setMap(this.map);
-
-      this.ctaLayer.addListener('click', function(kmlEvent) {
-        var text = kmlEvent.featureData.description;
-        var name = kmlEvent.featureData.name;
-        console.log(text);
-        console.log(name);
-      });
+      this.useCurrentLocation(0);
+      // this.ctaLayer = new google.maps.KmlLayer({
+      //     url:'http://mcc.lab.tt:8000/soilCapability/-61.40023168893231&10.641046689163778&1000',
+      // });
+      //
+      // this.ctaLayer.setMap(this.map);
+      //
+      // this.ctaLayer.addListener('click', function(kmlEvent) {
+      //   var text = kmlEvent.featureData.description;
+      //   var name = kmlEvent.featureData.name;
+      //   console.log(text);
+      //   console.log(name);
+      // });
 
       this.map.addListener('dblclick', (event)=>{
         console.log(event.latLng.lat());
@@ -116,7 +116,7 @@ export class ProfilePage {
 
   }
 
-  useCurrentLocation(){
+  useCurrentLocation(check){
     var entireUrl;
     let loader = this.loadingCtrl.create({
       content: "Determing your location and generating map....",
@@ -129,7 +129,9 @@ export class ProfilePage {
       this.latitude = position.coords.latitude;
       this.longitude = position.coords.longitude;
       entireUrl = this.dUrl+this.catUrl+"/"+this.longitude+"&"+this.latitude+"&"+this.radius;
-      this.ctaLayer.setMap(null);
+      if (check == 1 && this.ctaLayer!=null){
+        this.ctaLayer.setMap(null);
+      }
       this.ctaLayer = new google.maps.KmlLayer({
           url: entireUrl,
       });
@@ -137,6 +139,20 @@ export class ProfilePage {
       loader.dismiss();
     }, (err) => {
       loader.dismiss();
+      let alert = this.alertCtrl.create({
+        title: 'No Internet Connection',
+        message: 'Please try again when you have an Internet Connection or Mobile Data.',
+        buttons: [
+          {
+            text: 'Close',
+            role: 'cancel',
+            handler: () => {
+              console.log('Close');
+            }
+          }
+        ]
+      });
+      alert.present();
       console.log(err);
     });
 

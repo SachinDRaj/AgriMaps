@@ -1,12 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
-
-/**
- * Generated class for the WelcomescreenPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, ViewController, Slides } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -15,18 +8,14 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 })
 export class WelcomescreenPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl: ViewController) {
-  }
+  @ViewChild(Slides) slides: Slides;
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad WelcomescreenPage');
-  }
+  private buttonText: string;
+  private buttonText1: string;
+  private checkHide = true;
+  private checkHide1 = false;
 
-  dismiss() {
-    this.viewCtrl.dismiss();
-  }
-
-  slides = [
+  slides1 = [
     {
       title: "Welcome to AgriMaps!",
       description: "AgriMaps is mobile application which displays land and soil information using a map interface.",
@@ -49,4 +38,52 @@ export class WelcomescreenPage {
       image: "assets/imgs/screen4.png",
     }
   ];
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl: ViewController) {
+    this.buttonText = "Next";
+    this.buttonText1 = "Previous";
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad WelcomescreenPage');
+  }
+
+  slideChanged(){
+    let currentIndex = this.slides.getActiveIndex();
+
+    if(currentIndex === 0){
+      this.buttonText = "Next";
+      this.checkHide = true;
+      this.checkHide1 = false;
+    }else if(currentIndex === 1){
+      this.buttonText = "Next";
+      this.checkHide = false;
+      this.checkHide1 = false;
+    }else if(currentIndex === 2){
+      this.buttonText = "Next";
+      this.checkHide = false;
+      this.checkHide1 = false;
+    }else if(currentIndex === 3){
+      this.buttonText = "Next";
+      this.checkHide = false;
+      this.checkHide1 = false;
+    }else if(currentIndex === 4){
+      this.buttonText = "Ready";
+      this.checkHide = false;
+      this.checkHide1 = true;
+    }
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
+  }
+
+  nextSlide(){
+    this.slides.slideNext();
+  }
+
+  previousSlide(){
+    this.slides.slidePrev();
+  }
+
 }

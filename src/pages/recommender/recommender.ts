@@ -162,7 +162,7 @@ export class RecommenderPage {
       this.latitude = position.coords.latitude;
       this.longitude = position.coords.longitude;
       entireUrl = this.dUrl+this.catUrl+"/"+this.longitude+"&"+this.latitude+"&"+this.radius;
-      if (check == 1){
+      if (check == 1 && this.ctaLayer!=null){
         if (this.infoCheck == true){
           this.infowindow.close();
           this.infoCheck = false;
@@ -221,7 +221,20 @@ export class RecommenderPage {
       loader.dismiss();
     }, (err) => {
       loader.dismiss();
-      alert("Error determining location try again.");
+      let alert = this.alertCtrl.create({
+        title: 'No Internet Connection',
+        message: 'Please try again when you have an Internet Connection or Mobile Data.',
+        buttons: [
+          {
+            text: 'Close',
+            role: 'cancel',
+            handler: () => {
+              console.log('Close');
+            }
+          }
+        ]
+      });
+      alert.present();
       console.log(err);
     });
 

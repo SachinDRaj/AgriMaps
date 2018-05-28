@@ -20,16 +20,10 @@
 <ion-content no-bounce>
   <div #map id="map" style="width:100%; height:100%;"></div>
   <ion-fab top right>
-    <button ion-fab color="white" mini (click)="useCurrentLocation()">
+    <button ion-fab color="white" mini (click)="useCurrentLocation(1)">
       <ion-icon name="locate"></ion-icon>
     </button>
   </ion-fab>
-
-  <!-- <ion-fab bottom left class="legend">
-    <button ion-fab color="white" mini (click)="useCurrentLocation()">
-      <ion-icon name="list-box"></ion-icon>
-    </button>
-  </ion-fab> -->
 
   <ion-fab bottom left class="legend" *ngIf="isValid">
     <button ion-fab hidden>
