@@ -5,6 +5,8 @@ import { LegendModalPage } from '../legend-modal/legend-modal';
 import { SettingsPage } from '../settings/settings';
 import { Geolocation } from '@ionic-native/geolocation';
 import { HTTP } from '@ionic-native/http';
+import { Storage } from '@ionic/storage';
+import { WelcomescreenPage } from '../welcomescreen/welcomescreen';
 
 declare var google: any;
 
@@ -25,9 +27,10 @@ export class ProfilePage {
   radius = 1000;
   isValid = true;
 
-  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation) {
+  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation,private storage: Storage) {
     // this.locFrom = this.navParams.get('param1');
     // this.navCtrl.push(LoginPage,{param1: 0});
+
   }
 
   ionViewDidEnter(){
@@ -41,7 +44,18 @@ export class ProfilePage {
   }
 
   ionViewDidLoad() {
+    this.checkWelcomeScreen();
     this.showmap();
+  }
+
+  checkWelcomeScreen(){
+    this.storage.get('welcomeCheck').then((val) => {
+      if(val == null || val.length == 0){
+        this.storage.set('welcomeCheck','true');
+        let modal = this.modalCtrl.create(WelcomescreenPage);
+        modal.present();
+      }
+    });
   }
 
   presentConfirm(lat,lng) {

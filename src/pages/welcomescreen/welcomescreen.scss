@@ -1,5 +1,8 @@
 page-welcomescreen {
   .tutorial-page {
+    .wToolbar{
+        padding-top: 10px;
+    }
 
     .toolbar-background {
       background: #fff;
@@ -17,7 +20,7 @@ page-welcomescreen {
     .slide-image {
       max-height: 50%;
       max-width: 60%;
-      margin: 18px 0;
+      // margin: 18px 0;
     }
 
     b {
