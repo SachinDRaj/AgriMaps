@@ -33,13 +33,19 @@ export class ProfilePage {
   }
 
   ionViewDidEnter(){
-    let toast = this.toastCtrl.create({
-            message: 'Now in Land Profile Mode',
-            duration: 1000,
-            position: 'middle'
-            // cssClass: "toastAfterHeader"
-        });
-    toast.present();
+    this.storage.get('welcomeCheck').then((val) => {
+      if(val == null || val.length == 0){
+        //do nothing
+      }else{
+        let toast = this.toastCtrl.create({
+                message: 'Now in Land Profile Mode',
+                duration: 1000,
+                position: 'middle'
+                // cssClass: "toastAfterHeader"
+            });
+        toast.present();
+      }
+    });
   }
 
   ionViewDidLoad() {
@@ -54,6 +60,15 @@ export class ProfilePage {
       if(val == null || val.length == 0){
         this.storage.set('welcomeCheck','true');
         let modal = this.modalCtrl.create(WelcomescreenPage);
+        modal.onDidDismiss(data=> {
+          let toast = this.toastCtrl.create({
+                  message: 'Now in Land Profile Mode',
+                  duration: 1000,
+                  position: 'middle'
+                  // cssClass: "toastAfterHeader"
+              });
+          toast.present();
+        });
         modal.present();
       }
     });
@@ -152,16 +167,36 @@ export class ProfilePage {
       if (check == 1 && this.ctaLayer!=null){
         this.ctaLayer.setMap(null);
       }
+
       this.ctaLayer = new google.maps.KmlLayer({
           url: entireUrl,
       });
       this.ctaLayer.setMap(this.map);
       loader.dismiss();
+      // try {
+      // }catch(error){
+      //   loader.dismiss();
+      //   let alert = this.alertCtrl.create({
+      //     title: 'No Internet Connection',
+      //     message: 'Please try again when you have an Internet Connection/Mobile Data.',
+      //     buttons: [
+      //       {
+      //         text: 'Close',
+      //         role: 'cancel',
+      //         handler: () => {
+      //           console.log('Close');
+      //         }
+      //       }
+      //     ]
+      //   });
+      //   alert.present();
+      // }
+
     }, (err) => {
       loader.dismiss();
       let alert = this.alertCtrl.create({
-        title: 'No Internet Connection, cannot determine your location!',
-        message: 'Please try again when you have an Internet Connection or Mobile Data.',
+        title: 'No Internet Connection or Location services is turned off!',
+        message: 'Please try again when you have an Internet Connection/Mobile Data or turn on Location Services for this application.',
         buttons: [
           {
             text: 'Close',

@@ -224,8 +224,8 @@ export class RecommenderPage {
     }, (err) => {
       loader.dismiss();
       let alert = this.alertCtrl.create({
-        title: 'No Internet Connection, cannot determine your location!',
-        message: 'Please try again when you have an Internet Connection or Mobile Data.',
+        title: 'No Internet Connection or Location services is turned off!',
+        message: 'Please try again when you have an Internet Connection/Mobile Data or turn on Location Services for this application.',
         buttons: [
           {
             text: 'Close',
