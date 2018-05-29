@@ -33,44 +33,18 @@ export class ProfilePage {
   }
 
   ionViewDidEnter(){
-    this.storage.get('welcomeCheck').then((val) => {
-      if(val == null || val.length == 0){
-        //do nothing
-      }else{
-        let toast = this.toastCtrl.create({
-                message: 'Now in Land Profile Mode',
-                duration: 1000,
-                position: 'middle'
-                // cssClass: "toastAfterHeader"
-            });
-        toast.present();
-      }
-    });
+    let toast = this.toastCtrl.create({
+            message: 'Now in Land Profile Mode',
+            duration: 1000,
+            position: 'middle'
+            // cssClass: "toastAfterHeader"
+        });
+    toast.present();
   }
 
   ionViewDidLoad() {
-    this.checkWelcomeScreen();
     this.platform.ready().then(() => {
       this.showmap();
-    });
-  }
-
-  checkWelcomeScreen(){
-    this.storage.get('welcomeCheck').then((val) => {
-      if(val == null || val.length == 0){
-        this.storage.set('welcomeCheck','true');
-        let modal = this.modalCtrl.create(WelcomescreenPage);
-        modal.onDidDismiss(data=> {
-          let toast = this.toastCtrl.create({
-                  message: 'Now in Land Profile Mode',
-                  duration: 1000,
-                  position: 'middle'
-                  // cssClass: "toastAfterHeader"
-              });
-          toast.present();
-        });
-        modal.present();
-      }
     });
   }
 
