@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, ModalController, ToastController, LoadingController, AlertController } from 'ionic-angular';
+import { NavController, ModalController, ToastController, LoadingController, AlertController, Platform } from 'ionic-angular';
 import { SettingsPage } from '../settings/settings';
 import { RecommenderMenuPage } from '../recommender-menu/recommender-menu';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -27,7 +27,7 @@ export class RecommenderPage {
   infowindow: any;
   infoCheck = false;
 
-  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation) {
+  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation,public platform: Platform) {
 
   }
 
@@ -42,7 +42,9 @@ export class RecommenderPage {
   }
 
   ionViewDidLoad() {
-    this.showmap();
+    this.platform.ready().then(() => {
+      this.showmap();
+    });
   }
 
   presentConfirm(lat,lng) {
@@ -222,7 +224,7 @@ export class RecommenderPage {
     }, (err) => {
       loader.dismiss();
       let alert = this.alertCtrl.create({
-        title: 'No Internet Connection',
+        title: 'No Internet Connection, cannot determine your location!',
         message: 'Please try again when you have an Internet Connection or Mobile Data.',
         buttons: [
           {
@@ -230,6 +232,7 @@ export class RecommenderPage {
             role: 'cancel',
             handler: () => {
               console.log('Close');
+              this.generateMap(this.catUrl,this.radius,this.subtitle,this.latitude,this.longitude);
             }
           }
         ]
@@ -363,7 +366,11 @@ export class RecommenderPage {
       this.infowindow.close();
       this.infoCheck = false;
     }
-    this.ctaLayer.setMap(null);
+    try {
+      this.ctaLayer.setMap(null);
+    }catch(error){
+      console.log(error);
+    }
     this.ctaLayer = new google.maps.KmlLayer({
         url: entireUrl,
         suppressInfoWindows: true
@@ -431,7 +438,11 @@ export class RecommenderPage {
     entireUrl= this.dUrl+catUrl+"/"+this.longitude+"&"+this.latitude+"&"+rad;
     console.log(entireUrl);
     this.subtitle = subtitle;
-    this.ctaLayer.setMap(null);
+    try {
+      this.ctaLayer.setMap(null);
+    }catch(error){
+      console.log(error);
+    }
     this.ctaLayer = new google.maps.KmlLayer({
         url: entireUrl,
     });

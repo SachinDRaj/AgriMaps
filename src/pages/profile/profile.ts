@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, ModalController, ToastController, LoadingController, AlertController } from 'ionic-angular';
+import { NavController, ModalController, ToastController, LoadingController, AlertController, Platform } from 'ionic-angular';
 import { ProfileMenuPage } from '../profile-menu/profile-menu';
 import { LegendModalPage } from '../legend-modal/legend-modal';
 import { SettingsPage } from '../settings/settings';
@@ -27,10 +27,9 @@ export class ProfilePage {
   radius = 1000;
   isValid = true;
 
-  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation,private storage: Storage) {
+  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation,private storage: Storage, public platform: Platform) {
     // this.locFrom = this.navParams.get('param1');
     // this.navCtrl.push(LoginPage,{param1: 0});
-
   }
 
   ionViewDidEnter(){
@@ -45,7 +44,9 @@ export class ProfilePage {
 
   ionViewDidLoad() {
     this.checkWelcomeScreen();
-    this.showmap();
+    this.platform.ready().then(() => {
+      this.showmap();
+    });
   }
 
   checkWelcomeScreen(){
@@ -79,7 +80,12 @@ export class ProfilePage {
             this.latitude = lat;
             this.longitude = lng;
             entireUrl = this.dUrl+this.catUrl+"/"+this.longitude+"&"+this.latitude+"&"+this.radius;
-            this.ctaLayer.setMap(null);
+            try {
+              this.ctaLayer.setMap(null);
+            }catch(error){
+              console.log(error);
+            }
+
             this.ctaLayer = new google.maps.KmlLayer({
                 url: entireUrl,
             });
@@ -154,7 +160,7 @@ export class ProfilePage {
     }, (err) => {
       loader.dismiss();
       let alert = this.alertCtrl.create({
-        title: 'No Internet Connection',
+        title: 'No Internet Connection, cannot determine your location!',
         message: 'Please try again when you have an Internet Connection or Mobile Data.',
         buttons: [
           {
@@ -162,6 +168,7 @@ export class ProfilePage {
             role: 'cancel',
             handler: () => {
               console.log('Close');
+              this.generateMap(this.catUrl,this.radius,this.subtitle,this.latitude,this.longitude);
             }
           }
         ]
@@ -197,7 +204,11 @@ export class ProfilePage {
         entireUrl= this.dUrl+data.catUrl+"/"+this.longitude+"&"+this.latitude+"&"+data.rad;
         console.log(entireUrl);
         this.subtitle = data.subtitle;
-        this.ctaLayer.setMap(null);
+        try {
+          this.ctaLayer.setMap(null);
+        }catch(error){
+          console.log(error);
+        }
         this.ctaLayer = new google.maps.KmlLayer({
             url: entireUrl,
             // url:'http://mcc.lab.tt:8000/recommendLettuce/-61.40023168893231&10.641046689163778&1000',
@@ -247,6 +258,29 @@ export class ProfilePage {
     }else{
       //do nothing
     }
+  }
+
+  generateMap(catUrl,rad,subtitle,lat,lng){
+    var entireUrl;
+    let loader = this.presentLoader();
+    this.catUrl = catUrl;
+    this.radius = rad;
+    this.longitude = lng;
+    this.latitude = lat;
+    entireUrl= this.dUrl+catUrl+"/"+this.longitude+"&"+this.latitude+"&"+rad;
+    console.log(entireUrl);
+    this.subtitle = subtitle;
+    try {
+      this.ctaLayer.setMap(null);
+    }catch(error){
+      console.log(error);
+    }
+    this.ctaLayer = new google.maps.KmlLayer({
+        url: entireUrl,
+    });
+    this.ctaLayer.setMap(this.map);
+
+    this.dismissLoader(loader);
   }
 
 }
