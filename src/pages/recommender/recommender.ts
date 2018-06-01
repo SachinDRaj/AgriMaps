@@ -50,7 +50,7 @@ export class RecommenderPage {
   presentConfirm(lat,lng) {
     var entireUrl;
     let alert = this.alertCtrl.create({
-      title: 'Change Location',
+      title: 'Change Location?',
       message: 'Would you like to set this location as the new point of interest?',
       buttons: [
         {
