@@ -3,7 +3,6 @@ import { NavController, ModalController, ToastController, LoadingController, Ale
 import { SettingsPage } from '../settings/settings';
 import { RecommenderMenuPage } from '../recommender-menu/recommender-menu';
 import { Geolocation } from '@ionic-native/geolocation';
-import { HTTP } from '@ionic-native/http';
 
 declare var google: any;
 
@@ -224,8 +223,8 @@ export class RecommenderPage {
     }, (err) => {
       loader.dismiss();
       let alert = this.alertCtrl.create({
-        title: 'No Internet Connection or Location services is turned off!',
-        message: 'Please try again when you have an Internet Connection/Mobile Data or turn on Location Services for this application.',
+        title: 'Location Services is turned off!',
+        message: 'Please turn on Location Services for this application.',
         buttons: [
           {
             text: 'Close',

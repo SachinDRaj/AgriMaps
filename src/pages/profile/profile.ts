@@ -4,9 +4,6 @@ import { ProfileMenuPage } from '../profile-menu/profile-menu';
 import { LegendModalPage } from '../legend-modal/legend-modal';
 import { SettingsPage } from '../settings/settings';
 import { Geolocation } from '@ionic-native/geolocation';
-import { HTTP } from '@ionic-native/http';
-import { Storage } from '@ionic/storage';
-import { WelcomescreenPage } from '../welcomescreen/welcomescreen';
 
 declare var google: any;
 
@@ -27,7 +24,7 @@ export class ProfilePage {
   radius = 1000;
   isValid = true;
 
-  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation,private storage: Storage, public platform: Platform) {
+  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation, public platform: Platform) {
     // this.locFrom = this.navParams.get('param1');
     // this.navCtrl.push(LoginPage,{param1: 0});
   }
@@ -169,8 +166,8 @@ export class ProfilePage {
     }, (err) => {
       loader.dismiss();
       let alert = this.alertCtrl.create({
-        title: 'No Internet Connection or Location services is turned off!',
-        message: 'Please try again when you have an Internet Connection/Mobile Data or turn on Location Services for this application.',
+        title: 'Location Services is turned off!',
+        message: 'Please turn on Location Services for this application.',
         buttons: [
           {
             text: 'Close',
