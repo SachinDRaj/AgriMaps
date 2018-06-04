@@ -14,12 +14,15 @@ import { SoilseriesPage } from '../pages/soilseries/soilseries';
 import { WelcomescreenPage } from '../pages/welcomescreen/welcomescreen';
 import { LegendModalPage } from '../pages/legend-modal/legend-modal';
 import { InitialisationPage } from '../pages/initialisation/initialisation';
+import { ConnectionPage } from '../pages/connection/connection';
+
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Geolocation } from '@ionic-native/geolocation';
-import { HTTP } from '@ionic-native/http';
+// import { HTTP } from '@ionic-native/http';
 import { IonicStorageModule } from '@ionic/storage';
+import { Network } from '@ionic-native/network';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,7 @@ import { IonicStorageModule } from '@ionic/storage';
     WelcomescreenPage,
     LegendModalPage,
     InitialisationPage,
+    ConnectionPage,
     TabsPage
   ],
   imports: [
@@ -54,13 +58,15 @@ import { IonicStorageModule } from '@ionic/storage';
     WelcomescreenPage,
     LegendModalPage,
     InitialisationPage,
+    ConnectionPage,
     TabsPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     Geolocation,
-    HTTP,
+    Network,
+    // HTTP,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
