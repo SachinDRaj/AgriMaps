@@ -1,4 +1,21 @@
 page-recommender {
+  .gbutton {
+    background-color: white;
+    border: 1px solid;
+    padding: 4px;
+    border-radius: 7px;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    cursor: pointer;
+  }
 
+  .gbutton:active {
+    background-color: #9ACD32;
+  }
+  .gbutton:hover {background-color: #9ACD32}
 }
+
 

@@ -192,13 +192,13 @@ export class RecommenderPage {
         let contentString1 = '<div>'+
             '<h5 id="firstHeading" class="firstHeading">'+this.name+'</h5>'+
             '<p>'+description+'</p>'+
-            '<button id="tap">View Recommendation</button>'+
+            '<button type="button" class="gbutton" id="tap">View Recommendation</button>'+
             '</div>';
 
         let contentString2 = '<div>'+
             '<h5 id="firstHeading" class="firstHeading">'+this.name+'</h5>'+
             '<p>'+description+'</p>'+
-            '<button id="tap" hidden>View Recommendation</button>'+
+            '<button type="button" class="gbutton" id="tap" hidden>View Recommendation</button>'+
             '</div>';
 
         if (parseInt(des[0])==2 && parseInt(des[2])==2 && parseInt(des[3])==2){
@@ -395,13 +395,13 @@ export class RecommenderPage {
       let contentString1 = '<div>'+
           '<h5 id="firstHeading" class="firstHeading">'+this.name+'</h5>'+
           '<p>'+description+'</p>'+
-          '<button id="tap">View Recommendation</button>'+
+          '<button type="button" class="gbutton" id="tap">View Recommendation</button>'+
           '</div>';
 
       let contentString2 = '<div>'+
           '<h5 id="firstHeading" class="firstHeading">'+this.name+'</h5>'+
           '<p>'+description+'</p>'+
-          '<button id="tap" hidden>View Recommendation</button>'+
+          '<button type="button" class="gbutton" id="tap" hidden>View Recommendation</button>'+
           '</div>';
 
       if (parseInt(des[0])==2 && parseInt(des[2])==2 && parseInt(des[3])==2){
