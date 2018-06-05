@@ -4,8 +4,11 @@ import { ProfileMenuPage } from '../profile-menu/profile-menu';
 import { LegendModalPage } from '../legend-modal/legend-modal';
 import { SettingsPage } from '../settings/settings';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Network } from '@ionic-native/network';
 
 declare var google: any;
+declare var navigator: any;
+declare var Connection: any;
 
 @Component({
   selector: 'page-profile',
@@ -24,7 +27,7 @@ export class ProfilePage {
   radius = 1000;
   isValid = true;
 
-  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation, public platform: Platform) {
+  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation, public platform: Platform,public network: Network) {
     // this.locFrom = this.navParams.get('param1');
     // this.navCtrl.push(LoginPage,{param1: 0});
   }
@@ -75,7 +78,7 @@ export class ProfilePage {
             this.ctaLayer = new google.maps.KmlLayer({
                 url: entireUrl,
             });
-            this.ctaLayer.setMap(this.map);
+            this.checkNetwork(this.ctaLayer);
             this.dismissLoader(loader);
           }
         }
@@ -101,18 +104,6 @@ export class ProfilePage {
       //
       // marker.setMap(this.map);
       this.useCurrentLocation(0);
-      // this.ctaLayer = new google.maps.KmlLayer({
-      //     url:'http://mcc.lab.tt:8000/soilCapability/-61.40023168893231&10.641046689163778&1000',
-      // });
-      //
-      // this.ctaLayer.setMap(this.map);
-      //
-      // this.ctaLayer.addListener('click', function(kmlEvent) {
-      //   var text = kmlEvent.featureData.description;
-      //   var name = kmlEvent.featureData.name;
-      //   console.log(text);
-      //   console.log(name);
-      // });
 
       this.map.addListener('dblclick', (event)=>{
         console.log(event.latLng.lat());
@@ -142,26 +133,9 @@ export class ProfilePage {
       this.ctaLayer = new google.maps.KmlLayer({
           url: entireUrl,
       });
-      this.ctaLayer.setMap(this.map);
+      // this.ctaLayer.setMap(this.map);
+      this.checkNetwork(this.ctaLayer);
       loader.dismiss();
-      // try {
-      // }catch(error){
-      //   loader.dismiss();
-      //   let alert = this.alertCtrl.create({
-      //     title: 'No Internet Connection',
-      //     message: 'Please try again when you have an Internet Connection/Mobile Data.',
-      //     buttons: [
-      //       {
-      //         text: 'Close',
-      //         role: 'cancel',
-      //         handler: () => {
-      //           console.log('Close');
-      //         }
-      //       }
-      //     ]
-      //   });
-      //   alert.present();
-      // }
 
     }, (err) => {
       loader.dismiss();
@@ -174,7 +148,7 @@ export class ProfilePage {
             role: 'cancel',
             handler: () => {
               console.log('Close');
-              this.generateMap(this.catUrl,this.radius,this.subtitle,this.latitude,this.longitude);
+              // this.generateMap(this.catUrl,this.radius,this.subtitle,this.latitude,this.longitude);
             }
           }
         ]
@@ -219,8 +193,8 @@ export class ProfilePage {
             url: entireUrl,
             // url:'http://mcc.lab.tt:8000/recommendLettuce/-61.40023168893231&10.641046689163778&1000',
         });
-        this.ctaLayer.setMap(this.map);
-
+        // this.ctaLayer.setMap(this.map);
+        this.checkNetwork(this.ctaLayer);
         // google.maps.event.addListener(this.ctaLayer, 'status_changed', function () {
         //     if (this.ctaLayer.getStatus() == google.maps.KmlLayerStatus.OK) {
         //         alert("hi");
@@ -267,6 +241,7 @@ export class ProfilePage {
   }
 
   generateMap(catUrl,rad,subtitle,lat,lng){
+
     var entireUrl;
     let loader = this.presentLoader();
     this.catUrl = catUrl;
@@ -284,9 +259,44 @@ export class ProfilePage {
     this.ctaLayer = new google.maps.KmlLayer({
         url: entireUrl,
     });
-    this.ctaLayer.setMap(this.map);
+
+    this.checkNetwork(this.ctaLayer);
 
     this.dismissLoader(loader);
   }
+
+  checkNetwork(ctalayer) {
+     this.platform.ready().then(() => {
+         var networkState = navigator.connection.type;
+         var states = {};
+         states[Connection.UNKNOWN]  = 'Unknown connection';
+         states[Connection.ETHERNET] = 'Ethernet connection';
+         states[Connection.WIFI]     = 'WiFi connection';
+         states[Connection.CELL_2G]  = 'Cell 2G connection';
+         states[Connection.CELL_3G]  = 'Cell 3G connection';
+         states[Connection.CELL_4G]  = 'Cell 4G connection';
+         states[Connection.CELL]     = 'Cell generic connection';
+         states[Connection.NONE]     = 'No network connection';
+         console.log(states[networkState]);
+         if (states[networkState]=='No network connection'){
+           let alert = this.alertCtrl.create({
+             title: 'No Internet Connection or Mobile Data!',
+             message: 'Please try again when you have an Internet Connection/Mobile Data',
+             buttons: [
+               {
+                 text: 'Close',
+                 role: 'cancel',
+                 handler: () => {
+                   console.log('Close');
+                 }
+               }
+             ]
+           });
+           alert.present();
+         }else{
+           ctalayer.setMap(this.map);
+         }
+     });
+   }
 
 }

@@ -3,8 +3,11 @@ import { NavController, ModalController, ToastController, LoadingController, Ale
 import { SettingsPage } from '../settings/settings';
 import { RecommenderMenuPage } from '../recommender-menu/recommender-menu';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Network } from '@ionic-native/network';
 
 declare var google: any;
+declare var navigator: any;
+declare var Connection: any;
 
 @Component({
   selector: 'page-recommender',
@@ -26,7 +29,7 @@ export class RecommenderPage {
   infowindow: any;
   infoCheck = false;
 
-  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation,public platform: Platform) {
+  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation,public platform: Platform,public network: Network) {
 
   }
 
@@ -174,7 +177,8 @@ export class RecommenderPage {
           url: entireUrl,
           suppressInfoWindows: true
       });
-      this.ctaLayer.setMap(this.map);
+      // this.ctaLayer.setMap(this.map);
+      this.checkNetwork(this.ctaLayer);
 
       this.ctaLayer.addListener('click', (kmlEvent)=>{
         if (this.infoCheck == true){
@@ -231,7 +235,7 @@ export class RecommenderPage {
             role: 'cancel',
             handler: () => {
               console.log('Close');
-              this.generateMap(this.catUrl,this.radius,this.subtitle,this.latitude,this.longitude);
+              // this.generateMap(this.catUrl,this.radius,this.subtitle,this.latitude,this.longitude);
             }
           }
         ]
@@ -374,7 +378,8 @@ export class RecommenderPage {
         url: entireUrl,
         suppressInfoWindows: true
     });
-    this.ctaLayer.setMap(this.map);
+    // this.ctaLayer.setMap(this.map);
+    this.checkNetwork(this.ctaLayer);
 
     this.ctaLayer.addListener('click', (kmlEvent)=>{
       if (this.infoCheck == true){
@@ -445,7 +450,8 @@ export class RecommenderPage {
     this.ctaLayer = new google.maps.KmlLayer({
         url: entireUrl,
     });
-    this.ctaLayer.setMap(this.map);
+    // this.ctaLayer.setMap(this.map);
+    this.checkNetwork(this.ctaLayer);
 
     this.dismissLoader(loader);
   }
@@ -468,5 +474,39 @@ export class RecommenderPage {
   openRecommendation(){
     console.log("hello im working");
   }
+
+  checkNetwork(ctalayer) {
+     this.platform.ready().then(() => {
+         var networkState = navigator.connection.type;
+         var states = {};
+         states[Connection.UNKNOWN]  = 'Unknown connection';
+         states[Connection.ETHERNET] = 'Ethernet connection';
+         states[Connection.WIFI]     = 'WiFi connection';
+         states[Connection.CELL_2G]  = 'Cell 2G connection';
+         states[Connection.CELL_3G]  = 'Cell 3G connection';
+         states[Connection.CELL_4G]  = 'Cell 4G connection';
+         states[Connection.CELL]     = 'Cell generic connection';
+         states[Connection.NONE]     = 'No network connection';
+         console.log(states[networkState]);
+         if (states[networkState]=='No network connection'){
+           let alert = this.alertCtrl.create({
+             title: 'No Internet Connection or Mobile Data!',
+             message: 'Please try again when you have an Internet Connection/Mobile Data',
+             buttons: [
+               {
+                 text: 'Close',
+                 role: 'cancel',
+                 handler: () => {
+                   console.log('Close');
+                 }
+               }
+             ]
+           });
+           alert.present();
+         }else{
+           ctalayer.setMap(this.map);
+         }
+     });
+   }
 
 }
