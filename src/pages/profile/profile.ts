@@ -18,7 +18,8 @@ export class ProfilePage {
 
   @ViewChild('map') mapRef: ElementRef;
   map: any;
-  dUrl = 'http://mcc.lab.tt:8000/';
+  // dUrl = 'http://mcc.lab.tt:8000/';
+  dUrl ='http://64.28.140.203/agrimaps/';
   ctaLayer: any;
   subtitle = "Soil Series";
   latitude = 10.641046689163778;
