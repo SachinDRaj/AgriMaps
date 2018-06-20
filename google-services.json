@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "350515078051",
+    "firebase_url": "https://agrimaps-1528388292678.firebaseio.com",
+    "project_id": "agrimaps-1528388292678",
+    "storage_bucket": "agrimaps-1528388292678.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350515078051:android:66dedc3d800bcdeb",
+        "android_client_info": {
+          "package_name": "dcit.uwi.agrimaps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "350515078051-vbnupllekek0mi0uh8b22co4rg969q1i.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "350515078051-vbnupllekek0mi0uh8b22co4rg969q1i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADr-nKaact21bzRvS-zbBN0Q3mlg3apic"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
