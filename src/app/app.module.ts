@@ -23,6 +23,8 @@ import { Geolocation } from '@ionic-native/geolocation';
 // import { HTTP } from '@ionic-native/http';
 import { IonicStorageModule } from '@ionic/storage';
 import { Network } from '@ionic-native/network';
+import { Firebase } from '@ionic-native/firebase';
+import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult } from '@ionic-native/native-geocoder';
 
 @NgModule({
   declarations: [
@@ -65,7 +67,9 @@ import { Network } from '@ionic-native/network';
     StatusBar,
     SplashScreen,
     Geolocation,
+    Firebase,
     Network,
+    NativeGeocoder,
     // HTTP,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

@@ -5,6 +5,8 @@ import { LegendModalPage } from '../legend-modal/legend-modal';
 import { SettingsPage } from '../settings/settings';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Network } from '@ionic-native/network';
+import { Firebase } from '@ionic-native/firebase';
+import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult } from '@ionic-native/native-geocoder';
 
 declare var google: any;
 declare var navigator: any;
@@ -28,9 +30,10 @@ export class ProfilePage {
   radius = 1000;
   isValid = true;
 
-  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation, public platform: Platform,public network: Network) {
+  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation, public platform: Platform,public network: Network,private firebase: Firebase,private nativeGeocoder: NativeGeocoder) {
     // this.locFrom = this.navParams.get('param1');
     // this.navCtrl.push(LoginPage,{param1: 0});
+    firebase.logEvent(this.subtitle, {content_type: "page_view", item_id: this.catUrl});
   }
 
   ionViewDidEnter(){
@@ -51,41 +54,68 @@ export class ProfilePage {
 
   presentConfirm(lat,lng) {
     var entireUrl;
-    let alert = this.alertCtrl.create({
-      title: 'Change Location?',
-      message: 'Would you like to set this location as the new point of interest?',
-      buttons: [
-        {
-          text: 'No',
-          role: 'cancel',
-          handler: () => {
-            console.log('No clicked');
-          }
-        },
-        {
-          text: 'Yes',
-          handler: () => {
-            console.log('Yes clicked');
-            let loader = this.presentLoader();
-            this.latitude = lat;
-            this.longitude = lng;
-            entireUrl = this.dUrl+this.catUrl+"/"+this.longitude+"&"+this.latitude+"&"+this.radius;
-            try {
-              this.ctaLayer.setMap(null);
-            }catch(error){
-              console.log(error);
-            }
+    this.firebase.logEvent("changeLocation", {content_type: "page_view", item_id: "changeLocation"});
 
-            this.ctaLayer = new google.maps.KmlLayer({
-                url: entireUrl,
-            });
-            this.checkNetwork(this.ctaLayer);
-            this.dismissLoader(loader);
-          }
+    this.nativeGeocoder.reverseGeocode(lat, lng)
+      .then((result: NativeGeocoderReverseResult) => {
+        // console.log(JSON.stringify(result));
+        var cc = JSON.stringify(result[0].countryCode);
+        // console.log(cc);
+        if (cc.localeCompare('"TT"')==0){
+          let alert = this.alertCtrl.create({
+            title: 'Change Location?',
+            message: 'Would you like to set this location as the new point of interest?',
+            buttons: [
+              {
+                text: 'No',
+                role: 'cancel',
+                handler: () => {
+                  console.log('No clicked');
+                }
+              },
+              {
+                text: 'Yes',
+                handler: () => {
+                  console.log('Yes clicked');
+                  let loader = this.presentLoader();
+                  this.latitude = lat;
+                  this.longitude = lng;
+                  entireUrl = this.dUrl+this.catUrl+"/"+this.longitude+"&"+this.latitude+"&"+this.radius;
+                  try {
+                    this.ctaLayer.setMap(null);
+                  }catch(error){
+                    console.log(error);
+                  }
+
+                  this.ctaLayer = new google.maps.KmlLayer({
+                      url: entireUrl,
+                  });
+                  this.checkNetwork(this.ctaLayer);
+                  this.dismissLoader(loader);
+                }
+              }
+            ]
+          });
+          alert.present();
+        }else{
+          let alert = this.alertCtrl.create({
+            title: 'Out of Region!',
+            message: 'AgriMaps only generates data within Trinidad.',
+            buttons: [
+              {
+                text: 'Close',
+                role: 'cancel',
+                handler: () => {
+                  console.log('Close');
+                }
+              }
+            ]
+          });
+          alert.present();
         }
-      ]
-    });
-    alert.present();
+      })
+      .catch((error: any) => console.log(error));
+
   }
 
   showmap(){
@@ -122,21 +152,51 @@ export class ProfilePage {
     });
     loader.present();
 
+    this.firebase.logEvent("useLocation", {content_type: "page_view", item_id: "gpsLocation"});
+
     this.geolocation.getCurrentPosition().then((position) => {
       let latLng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
       this.latitude = position.coords.latitude;
       this.longitude = position.coords.longitude;
-      entireUrl = this.dUrl+this.catUrl+"/"+this.longitude+"&"+this.latitude+"&"+this.radius;
-      if (check == 1 && this.ctaLayer!=null){
-        this.ctaLayer.setMap(null);
-      }
 
-      this.ctaLayer = new google.maps.KmlLayer({
-          url: entireUrl,
-      });
-      // this.ctaLayer.setMap(this.map);
-      this.checkNetwork(this.ctaLayer);
-      loader.dismiss();
+      this.nativeGeocoder.reverseGeocode(this.latitude, this.longitude)
+        .then((result: NativeGeocoderReverseResult) => {
+          // console.log(JSON.stringify(result));
+          var cc = JSON.stringify(result[0].countryCode);
+          // console.log(cc);
+          if (cc.localeCompare('"TT"')==0){
+            entireUrl = this.dUrl+this.catUrl+"/"+this.longitude+"&"+this.latitude+"&"+this.radius;
+            if (check == 1 && this.ctaLayer!=null){
+              this.ctaLayer.setMap(null);
+            }
+
+            this.ctaLayer = new google.maps.KmlLayer({
+                url: entireUrl,
+            });
+            // this.ctaLayer.setMap(this.map);
+            this.checkNetwork(this.ctaLayer);
+            loader.dismiss();
+          }else{
+            loader.dismiss();
+
+            let alert = this.alertCtrl.create({
+              title: 'Out of Region!',
+              message: 'AgriMaps only generates data within Trinidad. You can use this application outside Trinidad, however, using gps location to generate map data for your region will not work.',
+              buttons: [
+                {
+                  text: 'Close',
+                  role: 'cancel',
+                  handler: () => {
+                    console.log('Close');
+                    this.generateMap(this.catUrl,this.radius,this.subtitle,10.641046689163778,-61.40023168893231);
+                  }
+                }
+              ]
+            });
+            alert.present();
+          }
+        })
+        .catch((error: any) => console.log(error));
 
     }, (err) => {
       loader.dismiss();
@@ -185,6 +245,7 @@ export class ProfilePage {
         entireUrl= this.dUrl+data.catUrl+"/"+this.longitude+"&"+this.latitude+"&"+data.rad;
         console.log(entireUrl);
         this.subtitle = data.subtitle;
+        this.firebase.logEvent(this.subtitle, {content_type: "page_view", item_id: this.catUrl});
         try {
           this.ctaLayer.setMap(null);
         }catch(error){

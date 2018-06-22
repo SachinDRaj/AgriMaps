@@ -4,6 +4,8 @@ import { SettingsPage } from '../settings/settings';
 import { RecommenderMenuPage } from '../recommender-menu/recommender-menu';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Network } from '@ionic-native/network';
+import { Firebase } from '@ionic-native/firebase';
+import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult } from '@ionic-native/native-geocoder';
 
 declare var google: any;
 declare var navigator: any;
@@ -30,8 +32,8 @@ export class RecommenderPage {
   infowindow: any;
   infoCheck = false;
 
-  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation,public platform: Platform,public network: Network) {
-
+  constructor(public navCtrl: NavController,public modalCtrl: ModalController,public toastCtrl: ToastController,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public geolocation: Geolocation,public platform: Platform,private firebase: Firebase,public network: Network,private nativeGeocoder: NativeGeocoder) {
+    firebase.logEvent(this.subtitle, {content_type: "page_view", item_id: this.catUrl});
   }
 
   ionViewDidEnter(){
@@ -52,27 +54,55 @@ export class RecommenderPage {
 
   presentConfirm(lat,lng) {
     var entireUrl;
-    let alert = this.alertCtrl.create({
-      title: 'Change Location?',
-      message: 'Would you like to set this location as the new point of interest?',
-      buttons: [
-        {
-          text: 'No',
-          role: 'cancel',
-          handler: () => {
-            console.log('No clicked');
-          }
-        },
-        {
-          text: 'Yes',
-          handler: () => {
-            console.log('Yes clicked');
-            this.generateMap(this.catUrl,this.radius,this.subtitle,lat,lng);
-          }
+    this.firebase.logEvent("changeLocation", {content_type: "page_view", item_id: "changeLocation"});
+
+    this.nativeGeocoder.reverseGeocode(lat, lng)
+      .then((result: NativeGeocoderReverseResult) => {
+        // console.log(JSON.stringify(result));
+        var cc = JSON.stringify(result[0].countryCode);
+        // console.log(cc);
+        if (cc.localeCompare('"TT"')==0){
+          let alert = this.alertCtrl.create({
+            title: 'Change Location?',
+            message: 'Would you like to set this location as the new point of interest?',
+            buttons: [
+              {
+                text: 'No',
+                role: 'cancel',
+                handler: () => {
+                  console.log('No clicked');
+                }
+              },
+              {
+                text: 'Yes',
+                handler: () => {
+                  console.log('Yes clicked');
+                  this.generateMap(this.catUrl,this.radius,this.subtitle,lat,lng);
+                }
+              }
+            ]
+          });
+          alert.present();
+        }else{
+          let alert = this.alertCtrl.create({
+            title: 'Out of Region!',
+            message: 'AgriMaps only generates data within Trinidad.',
+            buttons: [
+              {
+                text: 'Close',
+                role: 'cancel',
+                handler: () => {
+                  console.log('Close');
+                }
+              }
+            ]
+          });
+          alert.present();
         }
-      ]
-    });
-    alert.present();
+      })
+      .catch((error: any) => console.log(error));
+
+
   }
 
   showmap(){
@@ -162,69 +192,99 @@ export class RecommenderPage {
     });
     loader.present();
 
+    this.firebase.logEvent("useLocation", {content_type: "page_view", item_id: "gpsLocation"});
+
     this.geolocation.getCurrentPosition().then((position) => {
       let latLng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
       this.latitude = position.coords.latitude;
       this.longitude = position.coords.longitude;
-      entireUrl = this.dUrl+this.catUrl+"/"+this.longitude+"&"+this.latitude+"&"+this.radius;
-      if (check == 1 && this.ctaLayer!=null){
-        if (this.infoCheck == true){
-          this.infowindow.close();
-          this.infoCheck = false;
-        }
-        this.ctaLayer.setMap(null);
-      }
-      this.ctaLayer = new google.maps.KmlLayer({
-          url: entireUrl,
-          suppressInfoWindows: true
-      });
-      // this.ctaLayer.setMap(this.map);
-      this.checkNetwork(this.ctaLayer);
 
-      this.ctaLayer.addListener('click', (kmlEvent)=>{
-        if (this.infoCheck == true){
-          this.infowindow.close();
-          this.infoCheck = false;
-        }
-        this.desc = kmlEvent.featureData.description;
-        this.name = kmlEvent.featureData.name;
-        var des = this.desc.split(',');
-        var description = this.descriptionBuilder(des);
-        console.log(this.desc);
-        // console.log(this.name);
+      this.nativeGeocoder.reverseGeocode(this.latitude, this.longitude)
+        .then((result: NativeGeocoderReverseResult) => {
+          // console.log(JSON.stringify(result));
+          var cc = JSON.stringify(result[0].countryCode);
+          // console.log(cc);
+          if (cc.localeCompare('"TT"')==0){
+            entireUrl = this.dUrl+this.catUrl+"/"+this.longitude+"&"+this.latitude+"&"+this.radius;
+            if (check == 1 && this.ctaLayer!=null){
+              if (this.infoCheck == true){
+                this.infowindow.close();
+                this.infoCheck = false;
+              }
+              this.ctaLayer.setMap(null);
+            }
+            this.ctaLayer = new google.maps.KmlLayer({
+                url: entireUrl,
+                suppressInfoWindows: true
+            });
+            // this.ctaLayer.setMap(this.map);
+            this.checkNetwork(this.ctaLayer);
 
-        let contentString1 = '<div>'+
-            '<h5 id="firstHeading" class="firstHeading">'+this.name+'</h5>'+
-            '<p>'+description+'</p>'+
-            '<button type="button" class="gbutton" id="tap">View Recommendation</button>'+
-            '</div>';
+            this.ctaLayer.addListener('click', (kmlEvent)=>{
+              if (this.infoCheck == true){
+                this.infowindow.close();
+                this.infoCheck = false;
+              }
+              this.desc = kmlEvent.featureData.description;
+              this.name = kmlEvent.featureData.name;
+              var des = this.desc.split(',');
+              var description = this.descriptionBuilder(des);
+              console.log(this.desc);
+              // console.log(this.name);
 
-        let contentString2 = '<div>'+
-            '<h5 id="firstHeading" class="firstHeading">'+this.name+'</h5>'+
-            '<p>'+description+'</p>'+
-            '<button type="button" class="gbutton" id="tap" hidden>View Recommendation</button>'+
-            '</div>';
+              let contentString1 = '<div>'+
+                  '<h5 id="firstHeading" class="firstHeading">'+this.name+'</h5>'+
+                  '<p>'+description+'</p>'+
+                  '<button type="button" class="gbutton" id="tap">View Recommendation</button>'+
+                  '</div>';
 
-        if (parseInt(des[0])==2 && parseInt(des[2])==2 && parseInt(des[3])==2){
-          contentString = contentString2;
-        }else contentString = contentString1;
+              let contentString2 = '<div>'+
+                  '<h5 id="firstHeading" class="firstHeading">'+this.name+'</h5>'+
+                  '<p>'+description+'</p>'+
+                  '<button type="button" class="gbutton" id="tap" hidden>View Recommendation</button>'+
+                  '</div>';
 
-        this.infowindow = new google.maps.InfoWindow({
-            content: contentString
-        });
+              if (parseInt(des[0])==2 && parseInt(des[2])==2 && parseInt(des[3])==2){
+                contentString = contentString2;
+              }else contentString = contentString1;
 
-        this.infowindow.setPosition({lat: kmlEvent.latLng.lat(), lng: kmlEvent.latLng.lng()});
-        this.infowindow.open(this.map);
-        this.infoCheck = true;
+              this.infowindow = new google.maps.InfoWindow({
+                  content: contentString
+              });
 
-        google.maps.event.addListenerOnce(this.infowindow, 'domready', () => {
-          document.getElementById('tap').addEventListener('click', () => {
-            console.log("touch");
-            this.presentRecommendation(this.determineRecommendation(des));
-          });
-        });
-      });
-      loader.dismiss();
+              this.infowindow.setPosition({lat: kmlEvent.latLng.lat(), lng: kmlEvent.latLng.lng()});
+              this.infowindow.open(this.map);
+              this.infoCheck = true;
+
+              google.maps.event.addListenerOnce(this.infowindow, 'domready', () => {
+                document.getElementById('tap').addEventListener('click', () => {
+                  console.log("touch");
+                  this.presentRecommendation(this.determineRecommendation(des));
+                });
+              });
+            });
+            loader.dismiss();
+          }else{
+            loader.dismiss();
+
+            let alert = this.alertCtrl.create({
+              title: 'Out of Region!',
+              message: 'AgriMaps only generates data within Trinidad. You can use this application outside Trinidad, however, using gps location to generate map data for your region will not work.',
+              buttons: [
+                {
+                  text: 'Close',
+                  role: 'cancel',
+                  handler: () => {
+                    console.log('Close');
+                    this.generateMap(this.catUrl,this.radius,this.subtitle,10.641046689163778,-61.40023168893231);
+                  }
+                }
+              ]
+            });
+            alert.present();
+          }
+        })
+        .catch((error: any) => console.log(error));
     }, (err) => {
       loader.dismiss();
       let alert = this.alertCtrl.create({
@@ -365,7 +425,7 @@ export class RecommenderPage {
     entireUrl= this.dUrl+catUrl+"/"+this.longitude+"&"+this.latitude+"&"+rad;
     console.log(entireUrl);
     this.subtitle = subtitle;
-
+    this.firebase.logEvent(this.subtitle, {content_type: "page_view", item_id: this.catUrl});
     if (this.infoCheck == true){
       this.infowindow.close();
       this.infoCheck = false;
@@ -443,6 +503,7 @@ export class RecommenderPage {
     entireUrl= this.dUrl+catUrl+"/"+this.longitude+"&"+this.latitude+"&"+rad;
     console.log(entireUrl);
     this.subtitle = subtitle;
+    this.firebase.logEvent(this.subtitle, {content_type: "page_view", item_id: this.catUrl});
     try {
       this.ctaLayer.setMap(null);
     }catch(error){

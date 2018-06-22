@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="dcit.uwi.agrimaps" version="9.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="dcit.uwi.agrimaps" version="9.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>AgriMaps</name>
     <description>AgriMaps Application</description>
     <author email="kyle.e.defreitas@gmail.com" href="http://sta.uwi.edu/rdifund/projects/agrinett/">AgriNeTT Team</author>
@@ -43,7 +43,7 @@
     </platform>
     <platform name="ios">
         <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
-            <string>We want your location! Best regards NSA</string>
+            <string>Your location is used to provide Land Profile and Crop Recommendation data based on where you are located.</string>
         </edit-config>
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
@@ -91,6 +91,10 @@
     </plugin>
     <plugin name="cordova-sqlite-storage" spec="^2.3.2" />
     <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
+    <plugin name="cordova-plugin-firebase" spec="^1.0.5" />
+    <plugin name="cordova-plugin-nativegeocoder" spec="^3.1.1">
+        <variable name="LOCATION_WHEN_IN_USE_DESCRIPTION" value="Use geocoder service" />
+    </plugin>
     <engine name="android" spec="~7.0.0" />
     <engine name="browser" spec="~5.0.3" />
     <engine name="ios" spec="~4.5.4" />
